@@ -1,0 +1,459 @@
+.section {
+  position: relative;
+  padding-inline: clamp(1.25rem, 4vw, 5rem);
+  overflow: clip;
+}
+
+.nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 0.85rem clamp(1.25rem, 4vw, 5rem);
+  color: var(--paper);
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+
+.nav a {
+  pointer-events: auto;
+}
+
+.wordmark,
+.monoLine,
+.stepNumber,
+.pendingTitle,
+.footer {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.wordmark {
+  text-decoration: none;
+}
+
+.navCta {
+  position: relative;
+  text-decoration: none;
+}
+
+.navCta::after,
+.primaryCta::after {
+  position: absolute;
+  right: 0;
+  bottom: -0.28rem;
+  left: 0;
+  height: 2px;
+  content: "";
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms var(--ease-out-quart);
+}
+
+.navCta:hover::after,
+.primaryCta:hover::after {
+  transform: scaleX(1);
+}
+
+.hero {
+  min-height: 86svh;
+  display: grid;
+  align-items: center;
+  padding-top: 4.5rem;
+  padding-bottom: clamp(1.5rem, 4vh, 3rem);
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.heroInner {
+  display: grid;
+  justify-items: center;
+  gap: clamp(0.7rem, 2vh, 1.2rem);
+  align-items: center;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroCopy {
+  display: grid;
+  justify-items: center;
+  max-width: 1060px;
+}
+
+.monoLine {
+  margin: 0 0 0.85rem;
+  color: color-mix(in oklch, var(--paper), var(--petrol) 18%);
+}
+
+.heroTitle,
+.sectionHeading,
+.thesisText,
+.closer {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.heroTitle {
+  max-width: 1060px;
+  margin: 0;
+  font-size: clamp(3.05rem, 6vw, 5.3rem);
+  line-height: 0.96;
+}
+
+.heroSub {
+  max-width: 58ch;
+  margin: 1rem 0 0;
+  color: color-mix(in oklch, var(--paper), var(--petrol) 12%);
+  font-size: clamp(1rem, 1.5vw, 1.16rem);
+}
+
+.primaryCta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  margin-top: 1.35rem;
+  color: var(--ink);
+  background: var(--signal);
+  border: 1px solid var(--signal);
+  border-radius: 3px;
+  padding: 0.78rem 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 200ms var(--ease-out-quart),
+    background-color 200ms var(--ease-out-quart);
+}
+
+.primaryCta:hover {
+  transform: translateY(-2px);
+  background: color-mix(in oklch, var(--signal), white 9%);
+}
+
+.signatureWrap {
+  order: -1;
+  width: min(530px, 68vw);
+  min-width: 260px;
+  min-height: 200px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.signatureWrap :global(.signature-canvas) {
+  width: min(100%, 530px);
+  min-width: min(100%, 260px);
+  aspect-ratio: 9 / 3.4;
+  height: auto;
+  display: block;
+}
+
+.thesis,
+.services,
+.operator {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.thesis {
+  min-height: 78svh;
+  display: grid;
+  align-items: center;
+}
+
+.measure {
+  width: min(1030px, 100%);
+  margin: 0 auto;
+}
+
+.thesisText {
+  margin: 0;
+  font-size: clamp(2rem, 4.4vw, 4.7rem);
+  line-height: 1.04;
+}
+
+.services {
+  min-height: 116svh;
+  padding-block: clamp(5.5rem, 12vw, 10rem);
+}
+
+.sectionGrid {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(180px, 0.42fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 7vw, 7rem);
+}
+
+.sectionHeading {
+  margin: 0;
+  font-size: clamp(2.1rem, 4vw, 4.2rem);
+  line-height: 1;
+}
+
+.lanes {
+  border-top: 1px solid var(--rule);
+}
+
+.lane {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.34fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 4vw, 4rem);
+  padding: clamp(1.75rem, 4vw, 3.4rem) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.lane h3,
+.step h3 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.05;
+  font-weight: 500;
+}
+
+.lane p,
+.step p,
+.operatorIntro,
+.contactInner p,
+.dialog p {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.example {
+  margin-top: 0.9rem !important;
+  color: var(--vellum) !important;
+}
+
+.process,
+.contact {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.process {
+  min-height: 98svh;
+  padding-block: clamp(5.5rem, 12vw, 10rem);
+}
+
+.steps {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid color-mix(in oklch, var(--paper), transparent 82%);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 3rem);
+  padding: clamp(1.35rem, 3vw, 2.4rem) 0;
+  border-bottom: 1px solid color-mix(in oklch, var(--paper), transparent 82%);
+}
+
+.stepNumber {
+  color: var(--signal);
+}
+
+.step p,
+.contactInner p,
+.dialogPanel p {
+  color: color-mix(in oklch, var(--paper), var(--petrol) 8%);
+}
+
+.operator {
+  min-height: 78svh;
+  padding-block: clamp(5.5rem, 12vw, 10rem);
+}
+
+.operatorGrid {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.62fr);
+  gap: clamp(2.5rem, 7vw, 7rem);
+  align-items: start;
+}
+
+.operatorIntro {
+  margin-top: 1.5rem;
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+}
+
+.proofList {
+  padding-top: 0.3rem;
+  border-top: 1px solid var(--rule);
+}
+
+.proofList ul {
+  margin: 1rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.proofList li + li {
+  margin-top: 0.65rem;
+}
+
+.pendingTitle {
+  margin: 0;
+  color: var(--petrol);
+}
+
+.contact {
+  min-height: 78svh;
+  display: grid;
+  align-content: space-between;
+  padding-top: clamp(5.5rem, 12vw, 10rem);
+  padding-bottom: 2rem;
+}
+
+.contactInner {
+  width: min(920px, 100%);
+  margin: 0 auto;
+}
+
+.closer {
+  max-width: 900px;
+  margin: 0 0 1.4rem;
+  font-size: clamp(2.4rem, 5.8vw, 6rem);
+  line-height: 0.98;
+}
+
+.fallback {
+  margin-top: 1.4rem !important;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.footer {
+  width: min(1120px, 100%);
+  margin: clamp(4rem, 9vw, 7rem) auto 0;
+  display: flex;
+  justify-content: space-between;
+  color: color-mix(in oklch, var(--paper), transparent 24%);
+}
+
+.dialog {
+  width: min(920px, calc(100% - 2rem));
+  padding: 0;
+  color: var(--paper);
+  background: transparent;
+  border: 0;
+}
+
+.dialog::backdrop {
+  background: color-mix(in oklch, var(--ink), transparent 14%);
+}
+
+.dialogPanel {
+  position: relative;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--ink-soft);
+  border: 1px solid color-mix(in oklch, var(--paper), transparent 80%);
+  border-radius: 4px;
+}
+
+.dialogPanel .pendingTitle {
+  color: var(--signal);
+}
+
+.dialogPanel h2 {
+  max-width: 16ch;
+  margin: 1rem 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.dialogClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  min-height: 38px;
+  padding: 0.45rem 0.7rem;
+  color: var(--paper);
+  background: transparent;
+  border: 1px solid color-mix(in oklch, var(--paper), transparent 70%);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.calFrame {
+  width: 100%;
+  min-height: min(640px, 62vh);
+  margin-top: 1.5rem;
+  background: var(--paper);
+  border: 1px solid color-mix(in oklch, var(--paper), transparent 78%);
+  border-radius: 3px;
+}
+
+@media (max-width: 840px) {
+  .heroInner,
+  .sectionGrid,
+  .operatorGrid,
+  .lane {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: 92svh;
+    padding-top: 4rem;
+  }
+
+  .signatureWrap {
+    min-height: 120px;
+  }
+
+  .heroTitle {
+    font-size: clamp(2.65rem, 13vw, 4.6rem);
+    line-height: 0.98;
+  }
+
+  .heroSub {
+    font-size: 0.98rem;
+  }
+
+  .sectionGrid,
+  .operatorGrid {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .nav {
+    min-height: 56px;
+  }
+
+  .navCta {
+    font-size: 0.92rem;
+  }
+
+  .hero {
+    padding-top: 5.5rem;
+  }
+
+  .step {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primaryCta:hover {
+    transform: none;
+  }
+}
