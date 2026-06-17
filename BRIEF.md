@@ -1,11 +1,23 @@
 # Landing Page Brief — NXTECHELON
 
-**Status:** Shape phase complete and confirmed by the project owner on 2026-06-16. Ready for implementation. Three blocking inputs still required from the user before the operator section and CTA can be wired (see Open Questions at the bottom).
+**Status:** Shape phase confirmed 2026-06-16. **Stack pivoted and full landing page implemented in shadcn / Tailwind / framer-motion on 2026-06-17** (see Stack Pivot Notice below). Three open questions remain (founder bio, Cal handle, fallback email — §12). Build is green; site renders.
 
 **Read order for any agent picking this up:**
 1. [`PRODUCT.md`](./PRODUCT.md) — strategic brief: register, users, brand personality, anti-references, design principles, accessibility floor.
 2. [`DESIGN.md`](./DESIGN.md) — seed visual system: North Star, color anchor, type direction, motion energy, named rules, do's and don'ts.
 3. This file — task-specific design brief for the landing page.
+
+---
+
+## Stack Pivot Notice (2026-06-17)
+
+This brief was originally written against a **CSS Modules + GSAP + Lenis + SplitType + @fontsource + bespoke HTML-Canvas signature element** stack, and Codex implemented that faithfully on 2026-06-16. On 2026-06-17 the project owner directed a full pivot to **Next.js 15 + TypeScript + Tailwind v4 + shadcn (`new-york` style) + framer-motion + lucide-react** to integrate a supplied animated-hero component. The CSS-Modules version was deleted (`app/page.module.css`, `components/MotionController.tsx`, `components/SignatureCanvas.tsx`), the pivot stack was installed, and the full page was rebuilt in Tailwind preserving the original content (Build/Integrate/Operate services, four-step process, Jordan Vale operator placeholder, contact + booking dialog).
+
+**What changed in this brief versus the original:**
+- §4 Scope — stack section rewritten.
+- §5 Layout Strategy — the bespoke `SignatureCanvas` is removed from the hero. The signature moment is now the rotating-phrase headline (`We ship the [phrase] you don't have time to build.`) with five operator-voice phrases cycling on a spring. If you want the canvas back, it's a clean add later.
+- §9 Typography — Söhne replaced with **Hanken Grotesk** (free, non-reflex, ships on Google Fonts). Source Serif 4 + JetBrains Mono unchanged. Klim swap path still documented at the bottom of §9.
+- Everything else (Feature Summary, Primary User Action, Design Direction, Anti-references, States, Interaction Model, Content Requirements, Color Resolution, Open Questions) is unchanged and still applies.
 
 ---
 
@@ -36,19 +48,20 @@ Book a 30-minute intake call. Single, repeated CTA. No alternate paths competing
 - **Breadth:** the whole landing page in one route.
 - **Interactivity:** real motion, real interactions, real form submission to a calendar link.
 - **Time intent:** polish until it ships.
-- **Stack (committed):**
-  - **Framework:** Next.js 15 (App Router) + TypeScript + CSS Modules. No Tailwind on the marketing surface.
-  - **Motion:** GSAP + ScrollTrigger + SplitType for kinetic typography and scroll choreography. Lenis for smooth scroll. No `framer-motion`.
-  - **Signature element:** HTML Canvas 2D. No three.js dependency required.
-  - **Fonts:** self-hosted (no Google Fonts runtime fetch).
-  - **Calendar:** Cal.com embed via native `<dialog>`.
-  - **Hosting:** Vercel default; works on any static-friendly Node host.
+- **Stack (committed and implemented 2026-06-17):**
+  - **Framework:** Next.js 15 (App Router) + TypeScript + Tailwind v4 (CSS-based config via `@theme`) + shadcn (`new-york` style preset) at `components/ui/`. The shadcn CSS-variable theme is wired to the brand OKLCH tokens in `app/globals.css`; dark is the default surface, with a `.paper` class flipping the semantic tokens locally on sections that should be light.
+  - **Motion:** framer-motion. One shared `<Reveal>` choreography (`components/ui/reveal.tsx`) carries every scroll-in headline on a single 520ms ease-out-quint, so the page reads as one decision instead of eight different animations. The hero's rotating-phrase animation uses a controlled spring (stiffness 90, damping 16) per the brand "no bounce/elastic" rule.
+  - **Hero signature element:** the rotating phrase IS the signature. The previous HTML-Canvas mark was removed in the pivot. Can be added back as a deferred-import client component if the page needs more visual weight.
+  - **Fonts:** loaded via `next/font/google` (Source Serif 4 + Hanken Grotesk + JetBrains Mono). Self-hosted by Next's font system, no runtime Google CDN fetch.
+  - **Calendar:** Cal.com embed via native `<dialog>` (see `components/ui/booking-dialog.tsx`). Triggered by any element with `data-booking-trigger` anywhere on the page. URL comes from `NEXT_PUBLIC_BOOKING_URL` (placeholder until real handle lands).
+  - **Hosting:** Vercel default; works on any static-friendly Node host. Build is fully prerendered static (`Route /` is `○ Static`).
+  - **Verification:** `npm run build` ships clean on 2026-06-17. Page weight 49.9KB, First Load JS 152KB.
 
 ## 5. Layout Strategy
 
 Single column, long scroll. Six narrative beats, paced deliberately. Each section has a different visual weight — the page breathes, accelerates, holds.
 
-1. **Hero (≈100vh, dark)** — Petrol-tinted near-black canvas. Centered display headline with a kinetic-type reveal on load. The **Signature Element** lives here as a generative Canvas mark that builds itself across the first ~1.5 seconds, then idles with subtle parametric drift. Sub-headline (single sentence) and a single primary CTA. Persistent thin top nav (wordmark + "Book a call").
+1. **Hero (≈100vh, dark)** — Petrol-tinted near-black canvas (radial vignette, no gradient surface). Three-line display headline: `We ship the` / `[rotating phrase]` / `you don't have time to build.` The rotating phrase cycles every 2.4s through five operator-voice nouns (*AI agents · internal copilots · data pipelines · agent platforms · inference systems*) in italic Signal-Accent (warm oxide-orange) Source Serif 4, springing in/out vertically. A small "Notes from the workshop" announcement chip sits above the headline; below, the sub-paragraph + two CTAs (primary "Book an intake call" in Signal, ghost "See how we work" anchoring to `#process`). A mono meta strip closes the hero (`Est. 2026 · Brooklyn × Remote · Booking Q3 engagements`). Persistent thin top nav at `mix-blend-difference` so the wordmark stays legible across the dark/paper section pivots without a JS observer.
 2. **Thesis (≈80vh, light)** — Pivot to Paper. One large editorial paragraph. Kinetic word reveal on scroll-in. Sets the operator stance in plain language. No bullets, no icons.
 3. **Services (≈120vh, light)** — Three capability lanes as type-led blocks, not cards. Each lane: a large verb (**Build / Integrate / Operate**), one paragraph, one specific concrete example. Vertical rhythm carries the structure; no boxes, no borders besides hairline rules between lanes.
 4. **How We Work (≈100vh, dark)** — Pivot back to Ink. A real numbered sequence (1 → 2 → 3 → 4) because it IS a sequence: **Intake → Scoped sprint → Ship → Handoff with runbooks**. This is the *one* deliberate numbered moment on the page — earned, not scaffolded.
@@ -124,13 +137,14 @@ Page transitions between Ink and Paper sections are scroll-driven crossfades on 
 
 DESIGN.md left this as a placeholder. The shape phase committed to:
 
-- **Display:** **GT Sectra Display** (Klim Type Foundry) — editorial advisor voice. Used for the hero headline and section headlines only.
-- **Body / UI sans:** **Söhne** (Klim Type Foundry) — disciplined operator voice. All body copy, sub-headlines, navigation, button labels.
-- **Mono / labels:** **Söhne Mono** (Klim Type Foundry) — small technical detail, metadata, the optional kicker on the Hero, code-like fragments.
+**Implemented 2026-06-17 (Google Fonts via `next/font/google`):**
+- **Display:** **Source Serif 4** (regular, light, italic) — editorial advisor voice. Hero headline, section headlines, all `<h1>`–`<h3>`.
+- **Body / UI sans:** **Hanken Grotesk** (regular, medium, semibold) — disciplined operator voice. All body copy, sub-headlines, navigation, button labels. *Swapped from the originally-planned Inter at the pivot, since Inter is on the impeccable brand-register reflex-reject list; Hanken Grotesk is a non-reflex neo-grotesque that pairs cleanly with Source Serif 4 on a serif/sans contrast axis.*
+- **Mono / labels:** **JetBrains Mono** — small technical detail, metadata, kicker chips, the mono meta strip in the hero footer.
 
 Pair on a contrast axis: serif display + neo-grotesque sans + mono. None of the three are on the brand-register reflex-reject list.
 
-**License requirement:** Klim Type Foundry, paid commercial license, required before production launch. If the license is not in hand at implementation time, swap to: **Source Serif 4** (display) + **Inter** (body) + **JetBrains Mono** (labels). Swap is `@font-face` only; the rest of the system does not change.
+**Klim premium swap path (still open):** GT Sectra Display + Söhne + Söhne Mono was the original committed pairing. If the Klim license is procured, swap is `app/layout.tsx` `next/font` declarations + the `--font-*-brand` variables in `app/globals.css`. The rest of the system does not change.
 
 ## 10. Color Resolution (to commit during implementation)
 

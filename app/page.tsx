@@ -1,195 +1,322 @@
-import { MotionController } from "../components/MotionController";
-import { SignatureCanvas } from "../components/SignatureCanvas";
-import styles from "./page.module.css";
+import Link from "next/link";
+import type { CSSProperties } from "react";
+import { ArrowUpRight, PhoneCall } from "lucide-react";
 
-const bookingUrl = "https://cal.com/nxtechelon-placeholder/30min";
+import { Hero } from "@/components/ui/animated-hero";
+import { Button } from "@/components/ui/button";
+import { BookingDialog } from "@/components/ui/booking-dialog";
+import { Reveal } from "@/components/ui/reveal";
+import { SlideTabs } from "@/components/ui/slide-tabs";
+
+/* ---------------------------------------------------------------------------
+   Content. Pulled forward from the Codex implementation (CSS-Modules
+   version, deleted in this rebuild). Placeholders match the brief:
+   real bio / shipped systems / Cal handle / email land via the user.
+   --------------------------------------------------------------------------- */
+
 const fallbackEmail = "hello@example.com";
+
+const navTabs = [
+  { label: "Home", href: "#top" },
+  { label: "Services", href: "#services" },
+  { label: "Process", href: "#process" },
+  { label: "Operator", href: "#operator" },
+  { label: "Contact", href: "#contact" },
+] as const;
 
 const services = [
   {
     verb: "Build",
-    body: "Custom AI workflows for the parts of the business that are too specific for off-the-shelf software.",
-    example: "Example: intake triage, proposal drafting, internal search, or decision-support tools shaped around your actual process.",
+    body: "Custom tools for the parts of your business that no off-the-shelf software fits — built around how you actually work, not how a software company imagined you might.",
+    example:
+      "Sorting new patient or client requests, drafting the proposals you send every week, finding the right past job or file in seconds, or helping you decide who to follow up with first.",
   },
   {
-    verb: "Integrate",
-    body: "Connect AI into the systems your team already uses, with the permissions, logging, and handoff paths the work requires.",
-    example: "Example: CRM notes, inbox routing, support queues, document stores, and reporting systems that stop living in separate tabs.",
+    verb: "Connect",
+    body: "We wire AI into the tools your team already uses every day — your email, calendar, scheduling, or invoicing software — so nobody has to learn one more thing.",
+    example:
+      "Notes that write themselves after a call. An inbox that sorts itself by what matters. Reports that pull from every tool instead of you copy-pasting between tabs.",
   },
   {
-    verb: "Operate",
-    body: "Stabilize what ships: prompts, evals, runbooks, monitoring, and iteration loops so the system stays useful after launch.",
-    example: "Example: weekly quality checks, failure review, model-routing updates, and clear ownership for the people using it.",
+    verb: "Maintain",
+    body: "After we hand the tool over, we make sure it keeps working. We check on it, fix what breaks, improve it as your business changes, and teach your team to run it themselves.",
+    example:
+      "Weekly check-ins, fixes when something goes sideways, updates as the AI itself gets better, and one clear person on your team who owns it.",
   },
-];
+] as const;
 
 const steps = [
   {
-    title: "Intake",
-    body: "We find the expensive bottleneck, the owner, and the system boundary before writing a line of code.",
+    title: "Find the bottleneck",
+    body: "We figure out the one thing costing you the most time or money — and exactly what would fix it. No code, no jargon, just a clear answer.",
   },
   {
-    title: "Scoped sprint",
-    body: "A narrow build plan, fixed decision points, and a working definition of shipped.",
+    title: "Focused build",
+    body: "A clear plan, a fixed budget, a fixed timeline. You see progress weekly and call the shots as they come — no surprises, no scope creep.",
   },
   {
-    title: "Ship",
-    body: "A usable system in the hands of the people doing the work, with the edge cases handled enough to trust it.",
+    title: "Launch",
+    body: "A working tool in the hands of the people who will actually use it, tested against the everyday cases you face — not a polished demo for the founder.",
   },
   {
-    title: "Handoff with runbooks",
-    body: "Documentation, operating rules, and a clear path for iteration instead of a mystery box.",
+    title: "Hand off the keys",
+    body: "Plain-English instructions, someone to call if something breaks, and a clear way to keep improving it. No black box, no permanent consultant on retainer.",
   },
-];
+] as const;
 
 const shippedSystems = [
-  "Built a placeholder lead-qualification workflow that routes inbound requests by urgency, fit, and owner.",
-  "Integrated a placeholder document-search assistant across policy files, proposals, and operating notes.",
-  "Operated a placeholder support triage loop with weekly quality review and handoff notes.",
-  "Shipped a placeholder executive briefing generator for recurring customer and pipeline reviews.",
-];
+  "Built a placeholder tool that sorts new leads by urgency and fit, so the team only calls back the ones worth their time.",
+  "Built a placeholder assistant that searches every proposal, contract, and note at once — finding the right one takes seconds, not an hour.",
+  "Built a placeholder system that answers routine customer questions, flags the ones that need a real person, and learns from every reply.",
+  "Built a placeholder weekly briefing that pulls from every tool and lands one clear summary in the owner's inbox every Monday morning.",
+] as const;
 
 export default function Home() {
   return (
     <>
-      <MotionController />
-      <header className={styles.nav} aria-label="Primary navigation">
-        <a className={styles.wordmark} href="#top" aria-label="NXTECHELON home">
-          NXTECHELON
-        </a>
-        <a className={styles.navCta} href={bookingUrl} data-cal-trigger>
-          Book a call
-        </a>
+      {/* Sticky nav — mix-blend-difference so the wordmark stays legible
+          across the dark/paper section pivots without a JS observer. */}
+      <header
+        aria-label="Primary navigation"
+        className="nx-load-fade-in pointer-events-none fixed inset-x-0 top-0 z-30"
+        style={{ "--load-delay": "600ms" } as CSSProperties}
+      >
+        <div className="mx-auto grid max-w-[1280px] grid-cols-[1fr_auto] items-center gap-4 px-6 py-4 text-paper sm:px-10 lg:grid-cols-[1fr_auto_1fr]">
+          <Link
+            href="#top"
+            className="pointer-events-auto font-mono text-[0.78rem] font-medium uppercase tracking-[0.22em] mix-blend-difference"
+          >
+            NXTECHELON
+          </Link>
+          <div className="pointer-events-auto hidden justify-self-center lg:block">
+            <SlideTabs
+              tabs={navTabs}
+              className="border-paper/70 bg-paper/95"
+            />
+          </div>
+          <button
+            type="button"
+            data-booking-trigger
+            className="pointer-events-auto justify-self-end font-mono text-[0.78rem] font-medium uppercase tracking-[0.22em] underline underline-offset-[6px] decoration-1 mix-blend-difference transition-opacity hover:opacity-70"
+          >
+            Book a call
+          </button>
+        </div>
       </header>
 
       <main id="top">
-        <section className={`${styles.section} ${styles.hero}`} data-hero data-section>
-          <div className={styles.heroInner}>
-            <div className={styles.heroCopy}>
-              <p className={styles.monoLine}>AI systems, built for operators.</p>
-              <h1 className={styles.heroTitle} data-reveal>
-                We build the AI you do not have time to build.
-              </h1>
-              <p className={styles.heroSub}>
-                An AI build studio for operators with judgment and no spare technical team. We ship the systems. You run your business.
-              </p>
-              <a className={styles.primaryCta} href={bookingUrl} data-cal-trigger>
-                Book a 30-minute intake
-              </a>
-            </div>
-            <div className={styles.signatureWrap} data-hero-signature>
-              <SignatureCanvas />
-            </div>
+        <Hero />
+
+        {/* ----- Thesis ------------------------------------------------- */}
+        <section
+          className="paper relative"
+          aria-labelledby="thesis-title"
+          id="thesis"
+        >
+          <div className="mx-auto grid min-h-[78svh] max-w-[1180px] items-center px-6 py-28 sm:px-10 lg:py-40">
+            <Reveal>
+              <h2
+                id="thesis-title"
+                className="font-serif font-light leading-[1.04] text-[clamp(2rem,4.4vw,4.7rem)]"
+              >
+                Most AI projects fail because they start with the technology,
+                not the work. We start with the bottleneck you actually feel
+                &mdash; the calls that don&rsquo;t get returned, the paperwork
+                that piles up, the customers who slip through &mdash; and
+                build something that handles it. Then we make sure it keeps
+                working{" "}
+                <em className="italic text-petrol">
+                  after we hand you the keys.
+                </em>
+              </h2>
+            </Reveal>
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.thesis}`} data-section>
-          <div className={styles.measure}>
-            <h2 className={styles.thesisText} data-reveal>
-              AI work fails when it is treated like a lecture. We work from the operating problem backwards: the decision, the workflow, the people who use it, and the system that has to keep behaving when the meeting ends.
-            </h2>
-          </div>
-        </section>
+        {/* ----- Services ----------------------------------------------- */}
+        <section
+          className="paper relative"
+          aria-labelledby="services-title"
+          id="services"
+        >
+          <div className="mx-auto grid max-w-[1180px] grid-cols-1 gap-12 px-6 py-28 sm:px-10 lg:grid-cols-[minmax(220px,0.42fr)_minmax(0,1fr)] lg:gap-[6rem] lg:py-40">
+            <Reveal>
+              <h2
+                id="services-title"
+                className="font-serif font-light leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
+              >
+                What we
+                <br />
+                build.
+              </h2>
+            </Reveal>
 
-        <section className={`${styles.section} ${styles.services}`} data-section>
-          <div className={styles.sectionGrid}>
-            <h2 className={styles.sectionHeading} data-reveal>
-              What we ship
-            </h2>
-            <div className={styles.lanes}>
-              {services.map((service) => (
-                <article className={styles.lane} key={service.verb}>
-                  <h3>{service.verb}</h3>
-                  <div>
-                    <p>{service.body}</p>
-                    <p className={styles.example}>{service.example}</p>
-                  </div>
-                </article>
+            <div className="border-t border-[color:var(--rule)]">
+              {services.map((service, index) => (
+                <Reveal key={service.verb} delay={index * 0.08}>
+                  <article className="grid grid-cols-1 gap-6 border-b border-[color:var(--rule)] py-10 sm:grid-cols-[minmax(140px,0.34fr)_minmax(0,1fr)] sm:gap-12 sm:py-14">
+                    <h3 className="font-serif text-[clamp(1.5rem,3vw,2.5rem)] font-medium leading-[1.05]">
+                      {service.verb}
+                    </h3>
+                    <div className="space-y-4">
+                      <p className="max-w-[60ch] text-base leading-[1.6] text-foreground sm:text-lg">
+                        {service.body}
+                      </p>
+                      <p className="max-w-[60ch] text-sm leading-[1.6] text-muted-foreground sm:text-base">
+                        {service.example}
+                      </p>
+                    </div>
+                  </article>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.process}`} data-section>
-          <div className={styles.sectionGrid}>
-            <h2 className={styles.sectionHeading} data-reveal>
-              How the work moves
-            </h2>
-            <ol className={styles.steps}>
+        {/* ----- Process ------------------------------------------------ */}
+        <section
+          className="relative bg-background text-foreground"
+          aria-labelledby="process-title"
+          id="process"
+        >
+          <div className="mx-auto grid max-w-[1180px] grid-cols-1 gap-12 px-6 py-28 sm:px-10 lg:grid-cols-[minmax(220px,0.42fr)_minmax(0,1fr)] lg:gap-[6rem] lg:py-40">
+            <Reveal>
+              <h2
+                id="process-title"
+                className="font-serif font-light leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
+              >
+                How it
+                <br />
+                goes.
+              </h2>
+            </Reveal>
+
+            <ol className="border-t border-white/10">
               {steps.map((step, index) => (
-                <li className={styles.step} key={step.title}>
-                  <span className={styles.stepNumber}>{index + 1}</span>
-                  <div>
-                    <h3>{step.title}</h3>
-                    <p>{step.body}</p>
-                  </div>
-                </li>
+                <Reveal key={step.title} delay={index * 0.06}>
+                  <li className="grid grid-cols-[3.5rem_minmax(0,1fr)] gap-6 border-b border-white/10 py-10 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-12 sm:py-14">
+                    <span className="font-mono text-xs font-medium uppercase tracking-[0.22em] text-signal">
+                      0{index + 1}
+                    </span>
+                    <div className="space-y-3">
+                      <h3 className="font-serif text-[clamp(1.5rem,3vw,2.5rem)] font-medium leading-[1.05]">
+                        {step.title}
+                      </h3>
+                      <p className="max-w-[60ch] text-base leading-[1.6] text-muted-foreground sm:text-lg">
+                        {step.body}
+                      </p>
+                    </div>
+                  </li>
+                </Reveal>
               ))}
             </ol>
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.operator}`} data-section>
-          <div className={styles.operatorGrid}>
-            <div>
-              <h2 className={styles.sectionHeading} data-reveal>
-                Jordan Vale
-              </h2>
-              <p className={styles.operatorIntro}>
-                Placeholder founder bio: Jordan has spent the last decade turning messy operating problems into shipped internal systems. Their work sits between executive judgment and hands-on delivery: mapping the workflow, building the tool, and leaving the team with a system they can run. Replace this paragraph with the real founder background before launch.
-              </p>
-            </div>
-            <div className={styles.proofList}>
-              <p className={styles.pendingTitle}>Placeholder systems shipped</p>
-              <ul>
-                {shippedSystems.map((system) => (
-                  <li key={system}>{system}</li>
-                ))}
-              </ul>
-            </div>
+        {/* ----- Operator ----------------------------------------------- */}
+        <section
+          className="paper relative"
+          aria-labelledby="operator-title"
+          id="operator"
+        >
+          <div className="mx-auto grid max-w-[1180px] grid-cols-1 gap-12 px-6 py-28 sm:px-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(280px,0.62fr)] lg:gap-[6rem] lg:py-40">
+            <Reveal>
+              <div>
+                <h2
+                  id="operator-title"
+                  className="font-serif font-light leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
+                >
+                  Jordan Vale
+                </h2>
+                <p className="mt-6 max-w-[60ch] text-base leading-[1.65] text-foreground sm:text-lg">
+                  <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
+                    Placeholder bio —{" "}
+                  </span>
+                  Jordan has spent the last decade building practical tools
+                  for businesses that needed them &mdash; not flashy demos,
+                  not pitch decks, but software that real teams use every
+                  day. The work sits between understanding what the business
+                  actually needs and getting the thing built. Replace this
+                  paragraph with the real founder background before launch.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <div className="border-t border-[color:var(--rule)] pt-6">
+                <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
+                  Placeholder examples
+                </p>
+                <ul className="mt-6 space-y-5 text-base leading-[1.6] text-foreground sm:text-lg">
+                  {shippedSystems.map((system) => (
+                    <li
+                      key={system}
+                      className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-2"
+                    >
+                      <span aria-hidden className="select-none text-signal">
+                        →
+                      </span>
+                      <span>{system}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
           </div>
         </section>
 
-        <section className={`${styles.section} ${styles.contact}`} id="booking-details" data-section>
-          <div className={styles.contactInner}>
-            <h2 className={styles.closer} data-reveal>
-              If you have already decided AI matters, we should talk.
-            </h2>
-            <p>
-              Placeholder booking details are wired for now. Replace the Cal.com handle and email before launch.
-            </p>
-            <a className={styles.primaryCta} href={bookingUrl} data-cal-trigger>
-              Book a 30-minute intake
-            </a>
-            <p className={styles.fallback}>
-              Fallback email: <a href={`mailto:${fallbackEmail}`}>{fallbackEmail}</a>
-            </p>
+        {/* ----- Contact ------------------------------------------------ */}
+        <section
+          className="relative bg-background text-foreground"
+          aria-labelledby="contact-title"
+          id="contact"
+        >
+          <div className="mx-auto grid max-w-[1180px] grid-cols-1 gap-10 px-6 py-28 sm:px-10 lg:py-40">
+            <Reveal>
+              <h2
+                id="contact-title"
+                className="max-w-[18ch] font-serif font-light leading-[0.98] text-[clamp(2.4rem,5.8vw,6rem)]"
+              >
+                If you&rsquo;ve already decided AI matters,{" "}
+                <em className="italic text-signal">we should talk.</em>
+              </h2>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <div className="flex flex-col items-start gap-6">
+                <Button
+                  size="lg"
+                  className="group h-12 gap-3 px-7 text-sm tracking-wide"
+                  data-booking-trigger
+                >
+                  <PhoneCall className="h-4 w-4" strokeWidth={1.8} />
+                  Book a 30-minute call
+                </Button>
+                <p className="font-mono text-[0.78rem] uppercase tracking-[0.18em] text-muted-foreground">
+                  Or write —{" "}
+                  <a
+                    href={`mailto:${fallbackEmail}`}
+                    className="text-foreground underline underline-offset-4 decoration-1 hover:text-signal"
+                  >
+                    {fallbackEmail}
+                  </a>
+                </p>
+              </div>
+            </Reveal>
           </div>
-          <footer className={styles.footer}>
+
+          <footer className="mx-auto flex max-w-[1180px] flex-col items-start gap-3 border-t border-white/10 px-6 py-10 font-mono text-[0.72rem] uppercase tracking-[0.22em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-10">
             <span>NXTECHELON</span>
-            <span>2026</span>
+            <span className="flex items-center gap-2">
+              MMXXVI
+              <span className="h-1 w-1 rounded-full bg-muted-foreground/40" aria-hidden />
+              An AI build studio
+              <ArrowUpRight className="h-3 w-3 text-signal" strokeWidth={1.75} />
+            </span>
           </footer>
         </section>
       </main>
 
-      <dialog className={styles.dialog} data-booking-dialog aria-labelledby="booking-title">
-        <div className={styles.dialogPanel}>
-          <button className={styles.dialogClose} type="button" data-dialog-close aria-label="Close booking dialog">
-            Close
-          </button>
-          <p className={styles.pendingTitle}>Placeholder booking</p>
-          <h2 id="booking-title">Book a 30-minute intake.</h2>
-          <p>
-            This placeholder frame uses a temporary Cal.com URL. Swap in the real handle before production launch.
-          </p>
-          <iframe
-            className={styles.calFrame}
-            src={bookingUrl}
-            title="Book a 30-minute intake"
-            loading="lazy"
-          />
-        </div>
-      </dialog>
+      <BookingDialog />
     </>
   );
 }
