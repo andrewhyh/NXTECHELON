@@ -745,18 +745,155 @@ export default function Home() {
               </div>
             </Reveal>
           </div>
-
-          <footer className="mx-auto flex max-w-[1180px] flex-col items-start gap-3 border-t border-white/10 px-6 py-10 font-mono text-[0.72rem] uppercase tracking-[0.22em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-10">
-            <span>NXTECHELON</span>
-            <span className="flex items-center gap-2">
-              MMXXVI
-              <span className="h-1 w-1 rounded-full bg-muted-foreground/40" aria-hidden />
-              An AI build studio
-              <ArrowUpRight className="h-3 w-3 text-signal" strokeWidth={1.75} />
-            </span>
-          </footer>
         </section>
       </main>
+
+      {/* ----- Site footer -------------------------------------------------
+          Lives outside <main> so it's a proper page-level landmark, not the
+          tail of the contact section. Three-column layout on desktop —
+          brand block, sections nav, contact — then a bottom strip with
+          copyright + Privacy/Terms slots. Matches the rest of the site:
+          dark surface, Petrol kicker labels, Signal hover accent, hairline
+          white/10 rules, Hanken body type, TextScramble wordmark mirroring
+          the nav.                                                          */}
+      <footer
+        aria-label="Site footer"
+        className="relative bg-background text-foreground"
+      >
+        <div className="mx-auto max-w-[1180px] px-6 sm:px-10">
+          <div className="grid grid-cols-1 gap-12 border-t border-white/10 py-16 sm:py-20 lg:grid-cols-[1.5fr_1fr_1fr] lg:gap-16">
+            {/* Brand block */}
+            <div>
+              <Link
+                href="#top"
+                aria-label="NXTECHELON — back to top"
+                className="inline-block"
+              >
+                <TextScramble
+                  text="NXTECHELON"
+                  textClassName="font-mono text-[0.85rem] font-medium uppercase tracking-[0.22em]"
+                />
+              </Link>
+              <p className="mt-6 max-w-[34ch] text-base leading-[1.6] text-muted-foreground">
+                Practical AI and modern websites for small and mid-sized
+                businesses. Built in Atlanta, working remote across the U.S.
+              </p>
+              <p className="mt-6 font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
+                Now booking first engagements
+              </p>
+            </div>
+
+            {/* Sections nav */}
+            <nav aria-label="Footer sections">
+              <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
+                Sections
+              </p>
+              <ul className="mt-5 space-y-3 text-sm leading-[1.6] text-foreground">
+                <li>
+                  <Link
+                    href="#services"
+                    className="transition-colors hover:text-signal"
+                  >
+                    What we build
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#capabilities"
+                    className="transition-colors hover:text-signal"
+                  >
+                    What you get
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#proof"
+                    className="transition-colors hover:text-signal"
+                  >
+                    Proof
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#process"
+                    className="transition-colors hover:text-signal"
+                  >
+                    How it goes
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#operator"
+                    className="transition-colors hover:text-signal"
+                  >
+                    The operator
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#contact"
+                    className="transition-colors hover:text-signal"
+                  >
+                    Contact
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+
+            {/* Contact block */}
+            <div>
+              <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
+                Start a conversation
+              </p>
+              <div className="mt-5 space-y-4 text-sm leading-[1.6]">
+                <button
+                  type="button"
+                  data-booking-trigger
+                  className="group inline-flex items-center gap-2 text-foreground transition-colors hover:text-signal"
+                >
+                  Book a 30-minute call
+                  <ArrowUpRight
+                    className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    strokeWidth={1.75}
+                  />
+                </button>
+                <p className="text-muted-foreground">
+                  Or write &mdash;{" "}
+                  <a
+                    href={`mailto:${fallbackEmail}`}
+                    className="text-foreground underline underline-offset-4 decoration-1 transition-colors hover:text-signal"
+                  >
+                    {fallbackEmail}
+                  </a>
+                </p>
+                <p className="pt-2 font-mono text-[0.7rem] uppercase tracking-[0.22em] text-muted-foreground/80">
+                  Atlanta &middot; Remote across the U.S.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom strip */}
+          <div className="flex flex-col items-start gap-3 border-t border-white/10 py-8 font-mono text-[0.7rem] uppercase tracking-[0.22em] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <span>&copy; 2026 NXTECHELON</span>
+            <span className="flex items-center gap-5">
+              <Link href="#" className="transition-colors hover:text-foreground">
+                Privacy
+              </Link>
+              <Link href="#" className="transition-colors hover:text-foreground">
+                Terms
+              </Link>
+              <Link
+                href="#top"
+                className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+              >
+                Top
+                <ArrowUpRight className="h-3 w-3" strokeWidth={1.75} />
+              </Link>
+            </span>
+          </div>
+        </div>
+      </footer>
 
       <BookingDialog />
     </>
