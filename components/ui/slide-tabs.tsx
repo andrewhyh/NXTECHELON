@@ -75,8 +75,16 @@ export function SlideTabs({
     });
   }, []);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     updateCursor(selected);
+  }, [selected, updateCursor]);
+
+  React.useEffect(() => {
+    const updateOnResize = () => updateCursor(selected);
+
+    window.addEventListener("resize", updateOnResize);
+
+    return () => window.removeEventListener("resize", updateOnResize);
   }, [selected, updateCursor]);
 
   React.useEffect(() => {
@@ -102,8 +110,8 @@ export function SlideTabs({
       <ul
         onMouseLeave={() => updateCursor(selected)}
         className={cn(
-          "relative mx-auto flex w-fit border border-paper/25 bg-paper/95 p-1 text-ink",
-          "rounded-[4px] shadow-none",
+          "relative mx-auto flex w-fit list-none items-center border border-paper/15 bg-ink/88 px-2 py-1 text-paper",
+          "rounded-[3px] shadow-none",
           className,
         )}
       >
@@ -149,9 +157,9 @@ const Tab = React.forwardRef<HTMLLIElement, TabProps>(
     }, [setPosition]);
 
     const className = cn(
-      "relative z-10 block rounded-[3px] px-3 py-2 font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]",
-      "text-ink/70 transition-colors duration-200 hover:text-ink focus-visible:text-ink md:px-4",
-      selected && "text-ink",
+      "relative z-10 block rounded-[2px] px-3 py-2 font-mono text-[0.66rem] font-medium uppercase tracking-[0.2em]",
+      "text-paper/62 transition-colors duration-200 hover:text-paper focus-visible:text-paper md:px-4",
+      selected && "text-paper",
     );
 
     return (
@@ -202,7 +210,8 @@ function Cursor({
           ? { duration: 0 }
           : { type: "spring", stiffness: 420, damping: 34, mass: 0.8 }
       }
-      className="absolute inset-y-1 z-0 rounded-[3px] bg-signal"
+      className="absolute bottom-1 z-0 h-px rounded-full bg-signal"
+      role="presentation"
       aria-hidden
     />
   );

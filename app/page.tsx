@@ -3,8 +3,10 @@ import type { CSSProperties } from "react";
 import { ArrowUpRight, PhoneCall } from "lucide-react";
 
 import { Hero } from "@/components/ui/animated-hero";
-import { Button } from "@/components/ui/button";
+import { BentoSection } from "@/components/ui/bento-section";
 import { BookingDialog } from "@/components/ui/booking-dialog";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { SlideTabs } from "@/components/ui/slide-tabs";
 
@@ -89,10 +91,7 @@ export default function Home() {
             NXTECHELON
           </Link>
           <div className="pointer-events-auto hidden justify-self-center lg:block">
-            <SlideTabs
-              tabs={navTabs}
-              className="border-paper/70 bg-paper/95"
-            />
+            <SlideTabs tabs={navTabs} />
           </div>
           <button
             type="button"
@@ -172,6 +171,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* ----- Bento (the "show, don't tell" moment) ------------------ */}
+        <BentoSection />
 
         {/* ----- Process ------------------------------------------------ */}
         <section
@@ -282,24 +284,42 @@ export default function Home() {
               </h2>
             </Reveal>
             <Reveal delay={0.05}>
-              <div className="flex flex-col items-start gap-6">
-                <Button
-                  size="lg"
-                  className="group h-12 gap-3 px-7 text-sm tracking-wide"
-                  data-booking-trigger
-                >
-                  <PhoneCall className="h-4 w-4" strokeWidth={1.8} />
-                  Book a 30-minute call
-                </Button>
-                <p className="font-mono text-[0.78rem] uppercase tracking-[0.18em] text-muted-foreground">
-                  Or write —{" "}
-                  <a
-                    href={`mailto:${fallbackEmail}`}
-                    className="text-foreground underline underline-offset-4 decoration-1 hover:text-signal"
-                  >
-                    {fallbackEmail}
-                  </a>
+              <div className="relative max-w-2xl overflow-hidden rounded-2xl border border-border bg-secondary/30 p-8 backdrop-blur-sm sm:p-10">
+                <BorderBeam size={260} duration={11} />
+                <BorderBeam size={260} duration={11} delay={5.5} colorFrom="var(--petrol)" colorTo="var(--signal)" />
+
+                <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-signal">
+                  Thirty minutes. No pitch.
                 </p>
+                <h3 className="mt-3 font-serif text-2xl font-light leading-[1.1] text-foreground sm:text-3xl">
+                  Tell us what&rsquo;s broken. We&rsquo;ll tell you whether AI
+                  can fix it.
+                </h3>
+                <p className="mt-3 max-w-[52ch] text-sm leading-[1.6] text-muted-foreground sm:text-base">
+                  No slide deck, no homework. Bring the problem &mdash;
+                  we&rsquo;ll bring the questions, the honest answer, and a
+                  fixed-price plan if there&rsquo;s a real system to build.
+                </p>
+
+                <div className="mt-7 flex flex-col items-start gap-5">
+                  <Button
+                    size="lg"
+                    className="group h-12 gap-3 px-7 text-sm tracking-wide"
+                    data-booking-trigger
+                  >
+                    <PhoneCall className="h-4 w-4" strokeWidth={1.8} />
+                    Book a 30-minute call
+                  </Button>
+                  <p className="font-mono text-[0.78rem] uppercase tracking-[0.18em] text-muted-foreground">
+                    Or write —{" "}
+                    <a
+                      href={`mailto:${fallbackEmail}`}
+                      className="text-foreground underline underline-offset-4 decoration-1 hover:text-signal"
+                    >
+                      {fallbackEmail}
+                    </a>
+                  </p>
+                </div>
               </div>
             </Reveal>
           </div>

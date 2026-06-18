@@ -200,6 +200,37 @@
   opacity: 0;
 }
 
+/* ---------------------------------------------------------------------------
+   Magic-UI-style primitives, brand-tinted.
+   - Marquee: editorial horizontal/vertical infinite scroll for the bento
+     "searchable knowledge" panel.
+   - Border-beam: a single colored sweep that traces a parent's border edge.
+     Used around the final booking CTA card; the only decorative motion on
+     the page, deliberately scarce.
+   - Beam-flow: stroke-dashoffset animation for SVG integration lines.
+   --------------------------------------------------------------------------- */
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-100% - var(--gap))); }
+}
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to   { transform: translateY(calc(-100% - var(--gap))); }
+}
+@keyframes border-beam {
+  to { offset-distance: 100%; }
+}
+@keyframes beam-flow {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -210; }
+}
+
+.animate-marquee          { animation: marquee var(--duration) linear infinite; }
+.animate-marquee-vertical { animation: marquee-vertical var(--duration) linear infinite; }
+.animate-border-beam      { animation: border-beam calc(var(--duration) * 1s) infinite linear; }
+.animate-beam-flow        { animation: beam-flow 3s linear infinite; }
+
 /* Reduced motion: every animation needs an alternative. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -213,5 +244,12 @@
   .nx-load-fade-up {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .animate-marquee,
+  .animate-marquee-vertical,
+  .animate-border-beam,
+  .animate-beam-flow {
+    animation: none !important;
   }
 }
