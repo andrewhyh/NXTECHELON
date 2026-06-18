@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
+
 import { cn } from "@/lib/utils";
 
 interface BorderBeamProps {
@@ -15,50 +16,48 @@ interface BorderBeamProps {
 }
 
 /**
- * BorderBeam — Magic UI's animated conic beam, rebuilt to use brand tokens.
- * A single span of color sweeps around the parent's border, tracing the edge
- * deterministically (no random sparkle). Colors default to Signal → Petrol so
- * the beam reads as the brand, not as a neon SaaS effect.
+ * BorderBeam
  *
- * Drop into any container with `position: relative` and a border-radius:
- *   <div className="relative rounded-xl overflow-hidden">
- *     <BorderBeam />
- *     {children}
- *   </div>
+ * A masked conic-gradient ring. This avoids `offset-path` and SVG dash
+ * tiling quirks, both of which can render as broken border fragments in
+ * Chromium when the parent is responsive.
  */
 export function BorderBeam({
   className,
   size = 220,
   duration = 12,
-  anchor = 90,
+  anchor = 300,
   borderWidth = 1.5,
   colorFrom = "var(--signal)",
   colorTo = "var(--petrol)",
   delay = 0,
 }: BorderBeamProps) {
+  const beamWidth = Math.max(18, Math.min(42, size / 8));
+  const start = anchor;
+  const mid = anchor + beamWidth * 0.55;
+  const end = anchor + beamWidth;
+
   return (
     <div
+      aria-hidden
       style={
         {
-          "--size": size,
           "--duration": duration,
-          "--anchor": anchor,
-          "--border-width": borderWidth,
+          "--delay": `-${delay}s`,
+          "--border-width": `${borderWidth}px`,
+          "--beam-start": `${start}deg`,
+          "--beam-mid": `${mid}deg`,
+          "--beam-end": `${end}deg`,
           "--color-from": colorFrom,
           "--color-to": colorTo,
-          "--delay": `-${delay}s`,
+          "--beam-fill": "var(--secondary)",
         } as CSSProperties
       }
       className={cn(
-        "pointer-events-none absolute inset-0 rounded-[inherit]",
-        "[border:calc(var(--border-width)*1px)_solid_transparent]",
-        "![mask-clip:padding-box,border-box] ![mask-composite:intersect]",
-        "[mask:linear-gradient(transparent,transparent),linear-gradient(white,white)]",
-        "after:absolute after:aspect-square after:w-[calc(var(--size)*1px)]",
-        "after:animate-border-beam after:[animation-delay:var(--delay)]",
-        "after:[background:linear-gradient(to_left,var(--color-from),var(--color-to),transparent)]",
-        "after:[offset-anchor:calc(var(--anchor)*1%)_50%]",
-        "after:[offset-path:rect(0_auto_auto_0_round_calc(var(--size)*1px))]",
+        "pointer-events-none absolute inset-0 z-0 rounded-[inherit] border border-transparent",
+        "animate-border-beam [animation-delay:var(--delay)]",
+        "[border-width:var(--border-width)]",
+        "[background:linear-gradient(var(--beam-fill),var(--beam-fill))_padding-box,conic-gradient(from_var(--beam-angle),transparent_0deg,transparent_var(--beam-start),var(--color-to)_var(--beam-mid),var(--color-from)_var(--beam-end),transparent_calc(var(--beam-end)+12deg),transparent_360deg)_border-box]",
         className,
       )}
     />

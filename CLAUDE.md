@@ -1,274 +1,209 @@
-# CLAUDE.md — NextEchelon Landing Page
+# CLAUDE.md — NXTECHELON
 
-> Context file for Claude Code. Read this fully before generating or modifying code.
-> When in doubt, optimize for: clarity, conversion, speed, modern aesthetic.
+> Authoritative entry point for any agent picking up this project cold.
+> Read this in full before generating or modifying code.
 
 ---
 
-## Project
+## One-line positioning
 
-- **Name:** NextEchelon (stylized as **NXTECHLON** in the wordmark)
+**NXTECHELON** is an AI build studio for time-poor SMB operators in Atlanta and remote. Quiet authority. Operator, not tutorial. **The site is the proof.**
+
+The marketing site exists to convert a scanning, time-poor visitor into a booked 30-minute intake call by establishing two things at once: senior-advisor judgment (we understand your business) and operator-grade technical credibility (we can actually build it).
+
+- **Wordmark:** NXTECHELON
 - **Domain:** [nextechelon.site](https://nextechelon.site)
-- **Type:** Marketing landing page for an AI agency
-- **Primary goal:** Convert visitors into booked discovery calls
-- **Secondary goal:** Establish credibility and educate prospects on AI's practical business value
+- **Founder:** Andrew Huynh, Atlanta, GA
+- **Fallback contact:** huynh.andrew2021@gmail.com
+- **Booking:** Cal.com via native `<dialog>` (handle TBD — see TODOs)
 
 ---
 
-## About NextEchelon
+## Read order (non-optional)
 
-NextEchelon is an AI agency based in Metro Atlanta, GA, founded by Bryan Vu. We help small and mid-sized businesses modernize through **custom website development** and **practical AI integration** — delivering measurable outcomes without the buzzwords or enterprise price tag.
+1. **[`PRODUCT.md`](./PRODUCT.md)** — strategic brief. Register, users, brand personality, anti-references, design principles, accessibility floor.
+2. **[`DESIGN.md`](./DESIGN.md)** — visual system seed. North Star, color anchor (Petrol Teal), type direction, motion energy, named rules.
+3. **[`BRIEF.md`](./BRIEF.md)** — landing-page task brief. Six-beat layout, stack pivot notice, states, content slots, open questions.
+4. This file — the reconciled agent context layered on top of the three above.
 
-We are **AI-native from day one**, technically hands-on (not resellers), and we speak business — not just code.
-
-### Positioning Statement
-
-> For businesses that want to grow with technology but don't have the time or team to figure it out, NextEchelon delivers practical websites and AI systems that drive real results.
-
-### Mission
-
-Modernize small and mid-sized businesses through high-performing websites and practical AI integration that produce measurable outcomes.
-
-### Vision
-
-To be the go-to AI partner for small and mid-sized businesses that want to compete with enterprise-grade technology.
-
-### Core Values
-
-1. **Build what works.** No vanity tech.
-2. **Speak plainly.** Clients shouldn't need a translator.
-3. **Ship and iterate.** Done beats perfect.
-4. **Educate the client.** They should leave smarter than they came in.
-
-### Differentiators
-
-- Hands-on technical depth — we build, not resell
-- Business-first communication — outcomes, not jargon
-- Local presence (Metro Atlanta) + remote delivery anywhere in the U.S.
-- AI-native from inception, not bolted on
+When the three docs disagree with each other, this file is the tiebreaker.
 
 ---
 
-## Ideal Customer Profiles (ICPs)
+## Project state (2026-06-18)
 
-The landing page should resonate with all three. Use the copy hierarchy to address them in this order.
-
-### ICP 1 — Local Service Businesses (Primary)
-- **Examples:** Real estate agents/brokerages, law firms, medical/dental practices, home services (HVAC, roofing, landscaping), auto shops
-- **Pain points:** Outdated website, slow lead response, missed calls, manual booking, no follow-up system
-- **What they want:** More qualified leads, less time on admin, look professional online
-- **Sells well:** AI receptionist/chatbot, lead-capture sites, automated follow-up, review generation
-
-### ICP 2 — E-commerce & DTC Brands
-- **Pain points:** High support volume, abandoned carts, poor product discovery, low conversion
-- **What they want:** Higher AOV/conversion, lower support cost, better customer experience
-- **Sells well:** AI product recommendations, support chatbots, automated email/SMS, conversion-optimized PDPs
-
-### ICP 3 — Small B2B Companies Ready to Scale
-- **Pain points:** Founder-led sales, no website conversion, manual lead qualification, inconsistent outreach
-- **What they want:** Predictable lead flow, scalable sales motion, professional credibility
-- **Sells well:** Lead-gen AI agents, RAG-powered internal tools, sales automation, AI-enhanced CRM workflows
+- **Landing page is built and ships clean.** `npm run build` produces a green production build with the `/` route prerendered as static content.
+- **Stack pivoted 2026-06-17** from the original CSS Modules + GSAP + Lenis + SplitType + HTML-Canvas signature element to the shadcn / Tailwind v4 / framer-motion stack documented below.
+- **Page composition extended beyond BRIEF.md's original §8 ("type, motion, and one canvas").** The page now uses additional shadcn-style motion primitives (BentoSection, BorderBeam, SlideTabs, TextScramble, marquee, animated-list). These are sanctioned — see "Page structure" below — but every one of them must justify its place against the DESIGN.md don'ts before another is added.
+- **Pre-launch blockers** (see TODOs): Andrew's one-line technical background, real Cal.com handle for `NEXT_PUBLIC_BOOKING_URL`, FAQ question list, reduced-motion audit on the new components.
 
 ---
 
-## Services to Showcase
+## Stack (locked, as shipped)
 
-Organize the Services section around these four pillars:
+| Layer | Choice |
+|---|---|
+| Framework | Next.js 15 (App Router) + TypeScript |
+| Styling | Tailwind v4 (CSS-based `@theme` config in `app/globals.css`) |
+| Component baseline | shadcn `new-york` preset at `components/ui/` |
+| Motion | framer-motion. One shared `<Reveal>` choreography carries every scroll-in headline. Hero rotating-phrase uses a controlled spring (stiffness 90, damping 16) per the "no bounce/elastic" rule. |
+| Fonts | `next/font/google` — Source Serif 4 (display, regular + light + italic), Hanken Grotesk (body, regular + medium + semibold), JetBrains Mono (labels). Self-hosted by Next; no runtime Google CDN fetch. **Inter is explicitly banned** (reflex-reject list — see DESIGN.md §3). |
+| Icons | lucide-react |
+| Booking | Cal.com embed via native `<dialog>` (`components/ui/booking-dialog.tsx`). Triggered by any element with `data-booking-trigger`. URL from `NEXT_PUBLIC_BOOKING_URL`. |
+| Hosting | Vercel. Single route, statically prerendered. |
+| Analytics | None yet. When added: Plausible or Vercel Analytics. |
 
-### 1. Custom Website Development
-Conversion-focused, fast, modern. Mobile-first. Built on Next.js, WordPress, Webflow, or Shopify depending on fit. Client owns the domain, hosting, and code at handoff.
-
-### 2. AI Integration
-- Customer-support chatbots
-- Lead-qualifying AI assistants
-- Internal knowledge search (RAG systems)
-- Content generation tools
-- Automated email/SMS workflows
-- AI-enhanced CRM workflows
-
-### 3. AI Strategy & Consulting
-Roadmaps, audits, team training. For businesses that want a plan before they build.
-
-### 4. Workflow Automation
-Connecting tools to remove busywork — Zapier, Make, n8n, and custom code where needed.
+Do not introduce dependencies without explicit approval. Every new shadcn block must be checked against the DESIGN.md don'ts before being added.
 
 ---
 
-## Required Page Sections (in order)
-
-1. **Hero**
-   - Bold headline focused on outcome (e.g., "Smarter Websites. Real AI. Built for Business.")
-   - Subheadline naming the ICPs and value
-   - Primary CTA: "Book a Free Discovery Call"
-   - Secondary CTA: "See Our Services"
-   - Visual: animated/abstract AI motif or subtle product mockup
-
-2. **Social Proof Strip** *(immediately under hero — placeholder if no logos yet)*
-   - "Trusted by businesses across Metro Atlanta" or logo row
-
-3. **Problem / Agitation**
-   - 3 short cards naming the pain ICPs feel (outdated site, missed leads, drowning in busywork)
-
-4. **Services** (4-pillar grid — see above)
-
-5. **How We Work** (3- or 4-step process)
-   - Discovery call → Proposal & scope → Build → Launch & support
-
-6. **Outcomes / What You Get** *(benefit-focused, not feature-focused)*
-   - More qualified leads, faster response time, less manual work, professional brand
-
-7. **About / Founder** *(short, builds trust)*
-   - Bryan Vu, Metro Atlanta, technical background, AI-native focus
-
-8. **FAQ** (5–8 questions — pull from existing FAQ list)
-
-9. **Final CTA Section**
-   - "Ready to modernize your business?" + book-a-call button
-
-10. **Footer**
-    - Logo, contact, social, light nav, copyright
-
----
-
-## Brand Voice
-
-- **Confident, not cocky** — we know our craft
-- **Plain-spoken** — no jargon walls
-- **Outcome-focused** — always tie features to business value
-- **Modern & approachable** — tech-forward but human
-
-**Avoid:** "Revolutionary," "synergy," "leverage," "cutting-edge," "game-changing," generic AI hype. Be specific.
-
----
-
-## Visual & Design Direction
-
-### Aesthetic
-Modern, dark-mode-friendly, tech-forward but warm. Think: clean SaaS landing page energy (Linear, Vercel, Anthropic) — not gimmicky AI-art backgrounds.
-
-### Color Palette *(working defaults — confirm with Bryan)*
-- **Background:** Near-black `#0A0A0B` or off-white `#FAFAFA` (dark mode primary)
-- **Primary accent:** Electric blue or violet (TBD)
-- **Secondary accent:** Subtle gradient or neon edge
-- **Text:** High-contrast white/near-black
-
-### Typography
-- **Display/Headings:** Modern geometric sans (Inter, Geist, Satoshi, or similar)
-- **Body:** Same family, lighter weight
-- **Mono accents:** For technical credibility (JetBrains Mono, Geist Mono)
-
-### Motion
-- Subtle, purposeful. Fade-in on scroll, micro-interactions on CTAs, hover lifts on cards.
-- Hero may have a tasteful animated element (gradient mesh, particle, or motion text).
-- No autoplay video, no carousels that move on their own.
-
----
-
-## Tech Stack
-
-- **Framework:** Next.js (App Router) + TypeScript
-- **Styling:** Tailwind CSS
-- **Components:** shadcn/ui where useful; custom otherwise
-- **Animation:** Framer Motion (sparingly)
-- **Icons:** Lucide
-- **Forms:** Native + server actions; integrate with email/CRM later
-- **Deployment:** Vercel
-- **Analytics:** Add Plausible or Vercel Analytics post-launch
-
----
-
-## Performance Requirements
-
-- Lighthouse score ≥ 95 (Performance, Accessibility, Best Practices, SEO)
-- LCP < 2.0s on 4G
-- All images: Next/Image with proper sizes and AVIF/WebP
-- No render-blocking third-party scripts above the fold
-- Mobile-first; test at 375px, 768px, 1280px, 1920px
-
----
-
-## Accessibility
-
-- WCAG AA minimum
-- Semantic HTML (proper landmarks, heading hierarchy)
-- All interactive elements keyboard-navigable
-- Visible focus states
-- Alt text on all images
-- Color contrast ratios ≥ 4.5:1 for body text
-
----
-
-## SEO
-
-- **Primary keywords:** AI agency Atlanta, AI integration small business, custom website development Atlanta, AI chatbot for business
-- Unique `<title>` and meta description
-- Open Graph + Twitter card meta
-- Structured data: `Organization` + `LocalBusiness` (Metro Atlanta) + `Service` schema
-- Sitemap and `robots.txt`
-- Canonical URLs
-
----
-
-## CTAs
-
-Every CTA leads to one of:
-1. **Book a discovery call** (Calendly or Cal.com embed) — primary
-2. **Contact form** — secondary fallback
-3. **Email link** — footer only
-
-Use action-oriented language: "Book a free call," "Let's talk," "Start your project" — never "Submit" or "Click here."
-
----
-
-## Content Guardrails
-
-- **Don't overpromise specific results** (no "guaranteed 10x leads")
-- **Use realistic case-study language** when examples exist; placeholder copy if not
-- **No fake testimonials**
-- **Pricing:** Don't put exact dollar amounts on the page — direct to discovery call
-- **Compliance:** Add a basic privacy policy and terms page; cookie banner if analytics added
-
----
-
-## File / Folder Conventions
+## File map
 
 ```
-/app
-  /(marketing)
-    page.tsx          ← landing page
-    layout.tsx
-  /components
-    /sections         ← Hero, Services, FAQ, etc.
-    /ui               ← shadcn primitives
-  /lib
-  /public
-    /images
+app/
+  globals.css              Tailwind v4 @theme + brand OKLCH tokens + shadcn vars
+  layout.tsx               next/font wiring, metadata
+  page.tsx                 Full landing composition (six beats + FAQ)
+components/ui/
+  animated-hero.tsx        Rotating-phrase hero, framer-motion spring
+  animated-list.tsx        Vertical reveal list (Process / FAQ)
+  bento-grid.tsx           Tonal-layered grid primitive
+  bento-section.tsx        Services / capability layout built on bento-grid
+  booking-dialog.tsx       Native <dialog> Cal.com embed, data-booking-trigger
+  border-beam.tsx          One-shot beam animation for the hero signature
+  button.tsx               shadcn button (variants: default, ghost, outline, …)
+  hero-demo.tsx            Demo wrapper kept for reference; not in /
+  marquee.tsx              Mono-strip / capability marquee
+  reveal.tsx               Single shared scroll-into-view choreography
+  slide-tabs.tsx           Persistent top nav with sliding indicator
+  text-scramble.tsx        Headline reveal (one moment per page, not decoration)
+lib/
+  utils.ts                 cn() (clsx + tailwind-merge)
+components.json            shadcn config (new-york style, neutral baseColor)
+PRODUCT.md / DESIGN.md / BRIEF.md / CLAUDE.md
 ```
 
-- One section component per file
-- Co-locate section-specific helpers
-- Keep `page.tsx` as a composition file — sections do the work
+---
+
+## Audience
+
+**Page voice = one persona:** a time-poor business owner who knows AI matters and knows they are behind. They have judgment about their business but not time, language, or technical bandwidth to build with AI themselves. Their visit is a brief evaluation window between meetings, scanning for signals of competence. They are not here to learn about AI — they are here to find someone who will actually build the thing for them.
+
+**Internal targeting frame (sales / SEO, never in the copy):**
+
+1. **Local Atlanta service businesses** (primary). Real estate agencies/brokerages, law firms, medical/dental practices, home services (HVAC, roofing, landscaping), auto shops. Pain: outdated site, slow lead response, missed calls, manual booking, no follow-up system.
+2. **Small B2B companies ready to scale** (secondary). Pain: founder-led sales, no website conversion, manual lead qualification, inconsistent outreach. Sells: lead-gen AI agents, RAG-powered internal tools, sales automation, AI-enhanced CRM workflows.
+
+The page reads as one voice to one operator. The two ICPs shape which keywords carry weight in SEO and which case studies eventually live in the Proof section — they never become visible "for [persona]" copy switches on the page.
 
 ---
 
-## What Claude Code Should Do by Default
+## Voice
 
-- **Always** match the brand voice — confident, plain-spoken, outcome-focused
-- **Always** prefer accessibility, performance, and semantic HTML
-- **Always** mobile-first
-- **Never** introduce dependencies without asking
-- **Never** add tracking or third-party scripts without confirmation
-- **Never** generate fake testimonials, client names, or case-study results
-- When unsure about copy specifics — ask, or insert a clearly-marked `{{PLACEHOLDER}}`
+Senior advisor + operator. Editorial restraint. Mature, technical, decisive. Confident enough to be quiet.
+
+- Display copy (hero, section openers, Operator closer) is Source Serif 4 — advisor register.
+- Body copy is Hanken Grotesk — operator register. Plain-spoken. No hype words.
+- Mono accents (JetBrains Mono) are for small technical detail and the hero meta strip. Not for decoration.
+- Microcopy bans (from PRODUCT.md): no "transform / accelerate / unlock / empower / revolutionize / leverage / supercharge / unleash / cutting-edge / game-changing / let's chat." No "trusted by the world's leading…" No marketing exclamation marks.
+- Every sentence is specific or it's cut.
+
+When two readings of a line are plausible, choose the one that assumes the reader is sophisticated.
 
 ---
 
-## Open Questions / TODO
+## Page structure (locked)
 
-- [ ] Finalize tagline (working: "Smarter Websites. Real AI. Built for Business.")
-- [ ] Choose final accent color(s)
-- [ ] Logo asset (SVG)
-- [ ] Discovery-call booking tool (Calendly vs Cal.com)
-- [ ] First case studies / testimonials
-- [ ] Privacy policy and terms copy
-- [ ] Decide: dark mode default, light mode default, or toggle
+The page is six editorial beats, with a quiet FAQ block added between Operator and Contact:
+
+1. **Hero (dark / Ink)** — three-line display headline with the rotating phrase (operator-voice nouns cycling on the framer-motion spring). Announcement chip above; sub-paragraph + two CTAs below; mono meta strip closes.
+2. **Thesis (light / Paper)** — one large editorial paragraph. Kinetic word reveal on scroll-in. No bullets, no icons.
+3. **Services (light / Paper)** — **three pillars: Build / Connect / Maintain.** Type-led blocks, not cards. Each lane: large verb, one paragraph, one specific concrete example. Implemented today via `BentoSection`.
+4. **Process (dark / Ink)** — real numbered sequence (1 → 2 → 3 → 4): **Find the bottleneck → Focused build → Launch → Hand off the keys.** The *one* deliberate numbered moment on the page.
+5. **Operator (light / Paper)** — founder credibility block. Capability-first, no fabricated history. Bio stub: *"Andrew Huynh builds AI systems and tools for SMBs in Atlanta. Background in [TBD — one truthful line]. Currently booking first engagements."* No portrait until a real B&W photo is provided.
+6. **FAQ (light / Paper)** — quiet advisor-voice section answering the 5–8 objections a scanning operator brings to a pre-portfolio studio: price, timeline, "what counts as AI for my business," ownership/handoff, what happens after launch, where Andrew is based, who actually does the work. Type-only, no accordion ornaments.
+7. **Contact (dark / Ink)** — closer headline (one decisive sentence), single CTA to book, fallback email line. Minimal footer with wordmark, year, one or two links.
+
+**Explicitly NOT on the page:**
+
+- **No Social Proof / logo strip** until real logos exist. A placeholder strip is the cheap-consulting tell DESIGN.md bans.
+- **No separate "Outcomes / What You Get" benefit grid.** The services pillars already do this work.
+- **No problem/agitation cards.** The thesis paragraph carries the stance.
+- **No category eyebrows** above sections (`ABOUT` / `PROCESS` / `PRICING`). The headline introduces the section.
+- **No `01 / 02 / 03` numbered scaffolding** anywhere except Process — that section IS an ordered sequence and earns the numbers.
+
+Dark/light pivots between sections are scroll-driven crossfades on body color tokens — not abrupt, not parallax-flashy. The pivot itself is part of the rhythm.
+
+---
+
+## Proof posture (pre-portfolio)
+
+Until real testimonials and shipped client systems exist, the Operator section leans on capability statements — "things we can build for clients" — rather than fabricated proof. The existing four-line list in `app/page.tsx` (lead triage, proposal/contract search, customer-question routing, weekly briefing) reads as *capability examples*, not as claimed work.
+
+**Rules:**
+
+- Do not invent operator credentials, client names, logos, case studies, or numbers.
+- Do not write "trusted by…" or "joined N businesses…" while N is fabricated.
+- When real proof lands, the four capability lines get rewritten as real verb-led shipped systems with metrics; the section header shifts from capabilities to proof.
+- Treat the site itself as the load-bearing proof in the meantime. Craft is the credential.
+
+---
+
+## Hard rules (always-on guardrails)
+
+Carried forward from PRODUCT.md and DESIGN.md. Do not violate without checking first.
+
+- **Color:** Restrained near-mono + Petrol Teal anchor. Signal Accent (warm oxide-orange) on ≤10% of any screen. Background is true off-white or tinted toward the brand teal — **never cream / sand / paper-warm**.
+- **Type:** Editorial serif display + disciplined sans body. Body text is set in Ink, never pale gray. Body contrast ≥ 4.5:1, large text ≥ 3:1. Cap body line length at 65–75ch. `text-wrap: balance` on h1–h3.
+- **Layout:** Flat by default — depth is tonal, not shadow. No glassmorphism as default. No side-stripe borders. No gradient text or backgrounds. Button radius small and disciplined (0–4px).
+- **Motion:** Choreographed entrances and scroll sequences. **Every animation ships with a `prefers-reduced-motion: reduce` alternative.** The shared `Reveal` component already honors this via `useReducedMotion()`. The newer primitives (`BorderBeam`, `TextScramble`, `marquee`, `animated-list`) need an audit — see TODOs. No animation on CSS layout properties; compose on `transform` and `opacity`. Reveal animations enhance an already-visible default — never gate content visibility on a JS class.
+- **Pattern bans:** No SaaS-template hero (gradient + three feature cards + hero-metric block). No cheap-consulting tropes (stock photos, "transform your business," handshake imagery, rotating logo carousels). No playful mascots, Notion-style doodles, Duolingo characters. No AWS / GCP console aesthetic. No tracked-uppercase eyebrows. No decorative numbered scaffolding outside Process.
+- **A11y:** WCAG 2.2 AA. Full keyboard navigation with designed focus states (Signal Accent ring, 3px offset — not the browser default). Semantic HTML, landmark regions, heading order intact. Color is never the only carrier of meaning. JS-disabled fallback: all copy server-rendered, CTA falls back to a direct anchor link to `cal.com/<handle>`.
+
+---
+
+## Booking & email wiring
+
+- The booking dialog opens whenever any element with `data-booking-trigger` is clicked. Cal.com URL comes from `NEXT_PUBLIC_BOOKING_URL`.
+- Fallback email in `app/page.tsx` should be `huynh.andrew2021@gmail.com` (currently still `hello@example.com` — fix on the next pass).
+- Add a build-time guard that fails the build if the email contains `example.com` or `NEXT_PUBLIC_BOOKING_URL` is unset in production.
+
+---
+
+## Dev commands
+
+```bash
+npm install
+npm run dev         # http://localhost:3000
+npm run build       # production build (statically prerendered)
+npm run typecheck   # tsc --noEmit
+npm run lint        # next lint (eslint flat config)
+```
+
+- The shadcn config lives at `components.json`. To add another component: `npx shadcn@latest add <name>` (lands in `components/ui/`). Audit it against DESIGN.md don'ts before merging.
+- The brand semantic-token map lives at the top of `app/globals.css`. To recolor anything globally, edit the `:root` and `.paper` blocks.
+
+---
+
+## Open TODOs (blocking launch)
+
+1. **Andrew's one-line background** for the Operator bio stub.
+2. **Real Cal.com handle** → set `NEXT_PUBLIC_BOOKING_URL` in `.env.local` (and Vercel project env).
+3. **Replace `hello@example.com`** in `app/page.tsx` with `huynh.andrew2021@gmail.com`.
+4. **FAQ question list** — draft 5–8 questions in advisor voice (price, timeline, "what counts as AI," ownership/handoff, post-launch, geography, who builds), Andrew edits.
+5. **Reduced-motion audit** on `BorderBeam`, `TextScramble`, `marquee`, `animated-list`. Each must respect `useReducedMotion()` and degrade to instant / crossfade.
+6. **JS-disabled smoke test** — confirm no section's content is gated on framer-motion mount.
+7. **OKLCH contrast verification** in browser DevTools — verify body text clears AA on every section's background.
+8. **Update BRIEF.md §8** to sanction the added components (BentoSection, BorderBeam, SlideTabs, TextScramble, marquee, animated-list) so the brief stops disagreeing with reality.
+
+---
+
+## What NOT to touch
+
+- **Don't fabricate proof.** No invented testimonials, client logos, case studies, or numbers. If the bio TBD line is unanswered, ship the page with the capability framing — don't paper over the gap with fake credentials.
+- **Don't introduce Inter, Geist, or Satoshi** as the body font. They are on DESIGN.md's reflex-reject list. Hanken Grotesk is the body font; Source Serif 4 is display.
+- **Don't add a logo strip, gradient hero, three-feature-card grid, or eyebrow-tracked-uppercase pattern.** Those are the exact SaaS-template tells PRODUCT.md rejects.
+- **Don't add components without auditing against DESIGN.md §6 don'ts.** Especially anything with gradient text, side-stripe borders, ambient glow shadows, or glassmorphism.
+- **Don't move the Cal.com booking into a custom form.** The native `<dialog>` + Cal.com embed is the committed pattern.
+- **Don't track or load third-party scripts without confirmation.** Analytics is post-launch; tracking comes with a cookie banner and a privacy page.
+- **Don't drift CLAUDE.md from PRODUCT / DESIGN / BRIEF again.** When you change a load-bearing decision (stack, voice, structure), update this file in the same commit.

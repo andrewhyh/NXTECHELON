@@ -284,8 +284,8 @@ const features = [
     href: "#contact",
     cta: "Book a call yourself",
     background: (
-      <div className="absolute right-4 top-10 origin-top scale-90 transition-transform duration-300 ease-out group-hover:scale-100">
-        <div className="rounded-lg border border-border bg-secondary/60 p-4 shadow-sm">
+      <div className="absolute inset-x-4 top-10 mx-auto max-w-[17rem] origin-top transition-transform duration-300 ease-out group-hover:scale-[1.02] sm:inset-x-auto sm:right-4 sm:mx-0 sm:scale-90 sm:group-hover:scale-100">
+        <div className="rounded-lg border border-border bg-secondary/60 p-3 shadow-sm sm:p-4">
           <div className="mb-3 flex items-center justify-between">
             <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-foreground">
               October 2026
@@ -313,7 +313,7 @@ const features = [
                 <span
                   key={i}
                   className={cn(
-                    "grid h-7 w-7 place-items-center rounded font-mono text-[0.62rem]",
+                    "grid aspect-square w-full min-w-0 place-items-center rounded font-mono text-[0.62rem]",
                     !isCurrentMonth && "text-muted-foreground/30",
                     isCurrentMonth && !isHighlighted && !isAvailable && "text-foreground/70",
                     isAvailable && "text-foreground bg-secondary border border-border",
@@ -345,7 +345,7 @@ export function BentoSection() {
           </p>
           <h2
             id="capabilities-title"
-            className="mt-4 font-serif font-light leading-[0.98] text-[clamp(2rem,4vw,3.75rem)]"
+            className="mt-4 font-serif font-normal leading-[0.98] text-[clamp(2rem,4vw,3.75rem)]"
           >
             Four pieces that work together&nbsp;&mdash;{" "}
             <em className="italic text-petrol">on day one.</em>

@@ -109,7 +109,7 @@ function Hero() {
           {/* Headline — three-line editorial composition. The middle line
               rotates; the slot is reserved so the line never collapses. */}
           <motion.h1
-            className="max-w-4xl text-center font-serif font-light leading-[0.98] text-balance"
+            className="max-w-4xl text-center font-serif font-normal leading-[0.98] text-balance"
             variants={loadIn}
             custom={0.2}
           >

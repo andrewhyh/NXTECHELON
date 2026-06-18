@@ -1,6 +1,16 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { CSSProperties } from "react";
 import { ArrowUpRight, PhoneCall } from "lucide-react";
+import {
+  siCalendly,
+  siGoogle,
+  siHubspot,
+  siMake,
+  siQuickbooks,
+  type SimpleIcon,
+  siXero,
+} from "simple-icons";
 
 import { Hero } from "@/components/ui/animated-hero";
 import { BentoSection } from "@/components/ui/bento-section";
@@ -9,6 +19,7 @@ import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { SlideTabs } from "@/components/ui/slide-tabs";
+import { TextScramble } from "@/components/ui/text-scramble";
 
 /* ---------------------------------------------------------------------------
    Content. Pulled forward from the Codex implementation (CSS-Modules
@@ -21,8 +32,8 @@ const fallbackEmail = "hello@example.com";
 const navTabs = [
   { label: "Home", href: "#top" },
   { label: "Services", href: "#services" },
+  { label: "Proof", href: "#proof" },
   { label: "Process", href: "#process" },
-  { label: "Operator", href: "#operator" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
@@ -73,6 +84,318 @@ const shippedSystems = [
   "Built a placeholder weekly briefing that pulls from every tool and lands one clear summary in the owner's inbox every Monday morning.",
 ] as const;
 
+const credentialRoadmap = [
+  {
+    name: "Make Academy",
+    value: "Free",
+    detail: "Best first badge for scenario builders and small-business workflow automation.",
+  },
+  {
+    name: "HubSpot Academy",
+    value: "Free",
+    detail: "Useful for CRM, sales, marketing automation, and service-team handoffs.",
+  },
+  {
+    name: "Microsoft Applied Skills",
+    value: "Free labs",
+    detail: "Strong signal for Power Automate, Microsoft 365, and Copilot-heavy clients.",
+  },
+  {
+    name: "Airtable Academy",
+    value: "Free",
+    detail: "Good proof for lightweight internal tools, ops bases, and dashboard systems.",
+  },
+] as const;
+
+const integrationGroups = [
+  {
+    group: "Operations",
+    tools: [
+      { name: "Airtable", logo: "airtable" },
+      { name: "Notion", logo: "notion" },
+      { name: "Google Sheets", logo: "sheets" },
+      { name: "Slack", logo: "slack" },
+      { name: "Microsoft Teams", logo: "teams" },
+    ],
+  },
+  {
+    group: "Revenue",
+    tools: [
+      { name: "HubSpot", logo: "hubspot" },
+      { name: "Stripe", logo: "stripe" },
+      { name: "Calendly", logo: "calendly" },
+      { name: "Gmail", logo: "gmail" },
+      { name: "Google Workspace", logo: "workspace" },
+    ],
+  },
+  {
+    group: "Finance",
+    tools: [
+      { name: "QuickBooks", logo: "quickbooks" },
+      { name: "Xero", logo: "xero" },
+      { name: "Ramp", logo: "ramp" },
+      { name: "Google Drive", logo: "drive" },
+      { name: "Dropbox", logo: "dropbox" },
+    ],
+  },
+  {
+    group: "Automation",
+    tools: [
+      { name: "Make", logo: "make" },
+      { name: "Zapier", logo: "zapier" },
+      { name: "n8n", logo: "n8n" },
+      { name: "OpenAI", logo: "openai" },
+      { name: "Anthropic", logo: "anthropic" },
+    ],
+  },
+] as const;
+
+type IntegrationLogo = (typeof integrationGroups)[number]["tools"][number]["logo"];
+
+function IntegrationMark({ logo }: { logo: IntegrationLogo }) {
+  const common = {
+    className: "h-5 w-5 shrink-0",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    "aria-hidden": true,
+  } as const;
+
+  switch (logo) {
+    case "airtable":
+      return (
+        <svg {...common}>
+          <path d="M4 7.2 12 4l8 3.2-8 3.2L4 7.2Z" fill="currentColor" />
+          <path d="M4 9.5 11 12.3v6.2L4 15.7V9.5Z" fill="currentColor" opacity="0.52" />
+          <path d="M13 12.3 20 9.5v6.2l-7 2.8v-6.2Z" fill="currentColor" opacity="0.72" />
+        </svg>
+      );
+    case "notion":
+      return (
+        <svg {...common}>
+          <rect x="4" y="4" width="16" height="16" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M8 16V8h1.9l4.2 5.8V8H16v8h-1.8L10 10.1V16H8Z" fill="currentColor" />
+        </svg>
+      );
+    case "sheets":
+      return (
+        <svg {...common}>
+          <path d="M7 3h7l4 4v14H7V3Z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M14 3v5h4" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M9 11h7M9 14h7M11.3 9v8M13.7 9v8" stroke="currentColor" strokeWidth="1.1" />
+        </svg>
+      );
+    case "slack":
+      return (
+        <svg {...common}>
+          <path d="M8 4.5a2 2 0 0 1 4 0v4H8v-4ZM4.5 8a2 2 0 0 1 0-4H8v4H4.5ZM16 4.5a2 2 0 0 1 4 0V8h-4V4.5ZM12 8h4v4h-4V8ZM4 16h4v3.5a2 2 0 0 1-4 0V16ZM8 12h4v4H8v-4ZM16 16h3.5a2 2 0 0 1 0 4H16v-4ZM12 16h4v3.5a2 2 0 0 1-4 0V16Z" fill="currentColor" />
+        </svg>
+      );
+    case "teams":
+      return (
+        <svg {...common}>
+          <rect x="4" y="8" width="11" height="10" rx="1.5" fill="currentColor" />
+          <circle cx="17" cy="7" r="3" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M16 12h4v2.5a3.5 3.5 0 0 1-4 3.5" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M7 11h5M9.5 11v5" stroke="var(--background)" strokeWidth="1.2" />
+        </svg>
+      );
+    case "hubspot":
+      return (
+        <svg {...common}>
+          <circle cx="15.5" cy="8" r="3.2" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="7" cy="16" r="2.4" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M9 14.5 13.2 10M15.5 4.8V3M18.2 9.8 20 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      );
+    case "stripe":
+      return (
+        <svg {...common}>
+          <path d="M17.2 7.4c-1.4-.7-2.9-1-4.6-1-3 0-4.8 1.4-4.8 3.5 0 3.8 6.7 2.6 6.7 4.5 0 .7-.7 1.1-2.1 1.1-1.7 0-3.4-.5-4.8-1.3v3.1c1.5.7 3.1 1 4.8 1 3.3 0 5.2-1.4 5.2-3.8 0-3.9-6.7-2.8-6.7-4.5 0-.6.6-1 1.9-1 1.5 0 3 .4 4.4 1.1V7.4Z" fill="currentColor" />
+        </svg>
+      );
+    case "calendly":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M15.8 14.4a4.5 4.5 0 1 1 0-4.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      );
+    case "gmail":
+      return (
+        <svg {...common}>
+          <path d="M4 7.5v9.8h16V7.5l-8 6-8-6Z" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M4 7.5 12 13.5l8-6" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+        </svg>
+      );
+    case "workspace":
+      return (
+        <svg {...common}>
+          <rect x="4" y="4" width="7" height="7" rx="1.5" fill="currentColor" />
+          <rect x="13" y="4" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.52" />
+          <rect x="4" y="13" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.72" />
+          <rect x="13" y="13" width="7" height="7" rx="1.5" fill="currentColor" opacity="0.88" />
+        </svg>
+      );
+    case "quickbooks":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M11.5 8.5h-1.2a3.5 3.5 0 1 0 0 7h3.4a3.5 3.5 0 1 0 0-7h-1.2v7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case "xero":
+      return (
+        <svg {...common}>
+          <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.6" />
+          <path d="m8.2 8.5 7.6 7M15.8 8.5l-7.6 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+        </svg>
+      );
+    case "ramp":
+      return (
+        <svg {...common}>
+          <path d="M5 18V6h6.7c2.8 0 4.5 1.5 4.5 3.8 0 1.7-.9 3-2.4 3.5L18 18h-4.2l-3.5-4.3H8.6V18H5Zm3.6-7.1h2.6c.9 0 1.4-.4 1.4-1.1s-.5-1.1-1.4-1.1H8.6v2.2Z" fill="currentColor" />
+        </svg>
+      );
+    case "drive":
+      return (
+        <svg {...common}>
+          <path d="M10.2 4h4.2l6 10.4h-4.3L10.2 4Z" fill="currentColor" />
+          <path d="M9.6 5 3.8 15.4l2.1 3.6 5.9-10.4L9.6 5Z" fill="currentColor" opacity="0.58" />
+          <path d="M6.5 20h11.8l2.1-3.6H8.6L6.5 20Z" fill="currentColor" opacity="0.78" />
+        </svg>
+      );
+    case "dropbox":
+      return (
+        <svg {...common}>
+          <path d="m8 4 4 2.5L8 9 4 6.5 8 4Zm8 0 4 2.5L16 9l-4-2.5L16 4ZM8 10l4 2.5L8 15l-4-2.5L8 10Zm8 0 4 2.5L16 15l-4-2.5L16 10Zm-4 3.8 4 2.5-4 2.7-4-2.7 4-2.5Z" fill="currentColor" />
+        </svg>
+      );
+    case "make":
+      return (
+        <svg {...common}>
+          <circle cx="5" cy="12" r="2" fill="currentColor" />
+          <circle cx="12" cy="7" r="2" fill="currentColor" />
+          <circle cx="19" cy="12" r="2" fill="currentColor" />
+          <circle cx="12" cy="17" r="2" fill="currentColor" />
+          <path d="M6.8 10.8 10.2 8.3M13.8 8.3l3.4 2.5M17.2 13.2l-3.4 2.5M10.2 15.7l-3.4-2.5" stroke="currentColor" strokeWidth="1.3" />
+        </svg>
+      );
+    case "zapier":
+      return (
+        <svg {...common}>
+          <path d="M12 4v16M4 12h16M6.4 6.4l11.2 11.2M17.6 6.4 6.4 17.6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <circle cx="12" cy="12" r="2.4" fill="var(--background)" stroke="currentColor" strokeWidth="1.3" />
+        </svg>
+      );
+    case "n8n":
+      return (
+        <svg {...common}>
+          <path d="M5.5 12h13M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="5" cy="12" r="2.2" fill="var(--background)" stroke="currentColor" strokeWidth="1.4" />
+          <circle cx="12" cy="8.5" r="2.2" fill="var(--background)" stroke="currentColor" strokeWidth="1.4" />
+          <circle cx="12" cy="15.5" r="2.2" fill="var(--background)" stroke="currentColor" strokeWidth="1.4" />
+          <circle cx="19" cy="12" r="2.2" fill="var(--background)" stroke="currentColor" strokeWidth="1.4" />
+        </svg>
+      );
+    case "openai":
+      return (
+        <svg {...common}>
+          <path d="M12 4.2 15.4 6v4l3.4 2v3.8L15.4 18 12 16l-3.4 2-3.4-2.2V12l3.4-2V6L12 4.2Z" stroke="currentColor" strokeWidth="1.35" strokeLinejoin="round" />
+          <path d="M8.6 10 12 12l3.4-2M12 12v4M8.6 6v4M15.4 14v4M5.2 12l3.4 2M18.8 12l-3.4 2" stroke="currentColor" strokeWidth="1.15" strokeLinecap="round" />
+        </svg>
+      );
+    case "anthropic":
+      return (
+        <svg {...common}>
+          <path d="M5 18 10.3 6h3.4L19 18h-3.4l-.9-2.3H9.3L8.4 18H5Zm5.2-5h3.6L12 8.3 10.2 13Z" fill="currentColor" />
+        </svg>
+      );
+  }
+}
+
+const integrationLogoAssets: Partial<Record<IntegrationLogo, string>> = {
+  airtable: "/logos/integrations/airtable.svg",
+  notion: "/logos/integrations/notion.svg",
+  sheets: "/logos/integrations/google-sheets-2026.svg",
+  slack: "/logos/integrations/slack.svg",
+  teams: "/logos/integrations/microsoft-teams.svg",
+  stripe: "/logos/integrations/stripe.svg",
+  gmail: "/logos/integrations/gmail-2026.svg",
+  ramp: "/logos/integrations/ramp.svg",
+  drive: "/logos/integrations/google-drive-2026.svg",
+  dropbox: "/logos/integrations/dropbox.svg",
+  zapier: "/logos/integrations/zapier.svg",
+  n8n: "/logos/integrations/n8n.svg",
+  openai: "/logos/integrations/openai.svg",
+  anthropic: "/logos/integrations/anthropic.svg",
+};
+
+const simpleIconFallbacks: Partial<Record<IntegrationLogo, SimpleIcon>> = {
+  calendly: siCalendly,
+  hubspot: siHubspot,
+  make: siMake,
+  quickbooks: siQuickbooks,
+  workspace: siGoogle,
+  xero: siXero,
+};
+
+function IntegrationLogoMark({
+  logo,
+}: {
+  logo: IntegrationLogo;
+}) {
+  const asset = integrationLogoAssets[logo];
+
+  if (asset) {
+    return (
+      <Image
+        src={asset}
+        alt=""
+        width={24}
+        height={24}
+        className="h-6 w-6 object-contain"
+        loading="lazy"
+      />
+    );
+  }
+
+  const icon = simpleIconFallbacks[logo];
+
+  if (icon) {
+    return (
+      <svg
+        aria-hidden
+        className="h-6 w-6"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        style={{ color: `#${icon.hex}` }}
+      >
+        <path d={icon.path} />
+      </svg>
+    );
+  }
+
+  return <IntegrationMark logo={logo} />;
+}
+
+const caseStudySlots = [
+  {
+    result: "Invoice intake",
+    metric: "Replace with real metric",
+    title: "PDFs, email attachments, and approvals routed into one clean workflow.",
+  },
+  {
+    result: "Lead follow-up",
+    metric: "Replace with real metric",
+    title: "New inquiries scored, summarized, and assigned before the team opens the inbox.",
+  },
+  {
+    result: "Weekly reporting",
+    metric: "Replace with real metric",
+    title: "Owner-ready operating summaries pulled from the tools the team already uses.",
+  },
+] as const;
+
 export default function Home() {
   return (
     <>
@@ -86,9 +409,13 @@ export default function Home() {
         <div className="mx-auto grid max-w-[1280px] grid-cols-[1fr_auto] items-center gap-4 px-6 py-4 text-paper sm:px-10 lg:grid-cols-[1fr_auto_1fr]">
           <Link
             href="#top"
-            className="pointer-events-auto font-mono text-[0.78rem] font-medium uppercase tracking-[0.22em] mix-blend-difference"
+            aria-label="NXTECHELON — home"
+            className="pointer-events-auto mix-blend-difference"
           >
-            NXTECHELON
+            <TextScramble
+              text="NXTECHELON"
+              textClassName="font-mono text-[0.78rem] font-medium uppercase tracking-[0.22em]"
+            />
           </Link>
           <div className="pointer-events-auto hidden justify-self-center lg:block">
             <SlideTabs tabs={navTabs} />
@@ -103,34 +430,8 @@ export default function Home() {
         </div>
       </header>
 
-      <main id="top">
-        <Hero />
-
-        {/* ----- Thesis ------------------------------------------------- */}
-        <section
-          className="paper relative"
-          aria-labelledby="thesis-title"
-          id="thesis"
-        >
-          <div className="mx-auto grid min-h-[78svh] max-w-[1180px] items-center px-6 py-28 sm:px-10 lg:py-40">
-            <Reveal>
-              <h2
-                id="thesis-title"
-                className="font-serif font-light leading-[1.04] text-[clamp(2rem,4.4vw,4.7rem)]"
-              >
-                Most AI projects fail because they start with the technology,
-                not the work. We start with the bottleneck you actually feel
-                &mdash; the calls that don&rsquo;t get returned, the paperwork
-                that piles up, the customers who slip through &mdash; and
-                build something that handles it. Then we make sure it keeps
-                working{" "}
-                <em className="italic text-petrol">
-                  after we hand you the keys.
-                </em>
-              </h2>
-            </Reveal>
-          </div>
-        </section>
+        <main id="top">
+          <Hero />
 
         {/* ----- Services ----------------------------------------------- */}
         <section
@@ -138,13 +439,13 @@ export default function Home() {
           aria-labelledby="services-title"
           id="services"
         >
-          <div className="mx-auto grid max-w-[1180px] grid-cols-1 gap-12 px-6 py-28 sm:px-10 lg:grid-cols-[minmax(220px,0.42fr)_minmax(0,1fr)] lg:gap-[6rem] lg:py-40">
+          <div className="mx-auto grid max-w-[1180px] grid-cols-1 gap-12 px-6 py-24 sm:px-10 sm:py-28 lg:grid-cols-[minmax(220px,0.42fr)_minmax(0,1fr)] lg:gap-[6rem] lg:py-36">
             <Reveal>
               <h2
                 id="services-title"
-                className="font-serif font-light leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
+                className="font-serif font-normal leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
               >
-                What we
+                What we{" "}
                 <br />
                 build.
               </h2>
@@ -175,6 +476,148 @@ export default function Home() {
         {/* ----- Bento (the "show, don't tell" moment) ------------------ */}
         <BentoSection />
 
+        {/* ----- Proof -------------------------------------------------- */}
+        <section
+          className="paper relative"
+          aria-labelledby="proof-title"
+          id="proof"
+        >
+          <div className="mx-auto grid max-w-[1180px] grid-cols-1 gap-12 px-6 py-24 sm:px-10 sm:py-28 lg:grid-cols-[minmax(240px,0.4fr)_minmax(0,1fr)] lg:gap-[6rem] lg:py-36">
+            <Reveal>
+              <div>
+                <h2
+                  id="proof-title"
+                  className="font-serif font-normal leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
+                >
+                  Proof we{" "}
+                  <br />
+                  can point to.
+                </h2>
+                <p className="mt-6 max-w-[48ch] text-base leading-[1.6] text-foreground sm:text-lg">
+                  Atomic Actions uses badges, integration breadth, and case
+                  studies well. This version keeps the same trust signals,
+                  but makes the status honest until the credentials and client
+                  results are real.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="space-y-14">
+              <Reveal>
+                <div className="grid grid-cols-1 gap-8 border-t border-[color:var(--rule)] pt-8 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)]">
+                  <div>
+                    <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
+                      Credential roadmap
+                    </p>
+                    <h3 className="mt-3 max-w-[16ch] font-serif text-[clamp(1.55rem,2.4vw,2.6rem)] font-light leading-[1.05]">
+                      Low-cost badges that buyers recognize.
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 border-t border-[color:var(--rule)] min-[560px]:grid-cols-2 min-[560px]:border-l min-[560px]:border-t-0">
+                    {credentialRoadmap.map((credential) => (
+                      <article
+                        key={credential.name}
+                        className="border-b border-[color:var(--rule)] px-0 py-6 min-[560px]:border-r min-[560px]:px-6"
+                      >
+                        <div className="flex items-baseline justify-between gap-4">
+                          <h4 className="font-mono text-[0.78rem] font-medium uppercase tracking-[0.18em] text-foreground">
+                            {credential.name}
+                          </h4>
+                          <span className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-signal">
+                            {credential.value}
+                          </span>
+                        </div>
+                        <p className="mt-3 text-sm leading-[1.6] text-muted-foreground">
+                          {credential.detail}
+                        </p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.04}>
+                <div className="grid grid-cols-1 gap-8 border-t border-[color:var(--rule)] pt-8 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)]">
+                  <div>
+                    <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
+                      Integration coverage
+                    </p>
+                    <h3 className="mt-3 max-w-[18ch] font-serif text-[clamp(1.55rem,2.4vw,2.6rem)] font-light leading-[1.05]">
+                      Keep the stack. Connect the work.
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 gap-x-10 gap-y-8 min-[560px]:grid-cols-2">
+                    {integrationGroups.map((group) => (
+                      <div key={group.group}>
+                        <h4 className="border-b border-[color:var(--rule)] pb-3 font-mono text-[0.72rem] font-medium uppercase tracking-[0.18em] text-foreground">
+                          {group.group}
+                        </h4>
+                        <ul className="mt-4 flex flex-wrap gap-2.5">
+                          {group.tools.map((tool) => (
+                            <li
+                              key={tool.name}
+                              className="group flex min-h-10 max-w-full items-center gap-2 rounded-[2px] border border-[color:var(--rule)] bg-background/35 px-2.5 py-2 text-foreground transition-colors hover:border-petrol hover:text-petrol"
+                            >
+                              <span
+                                className="grid h-8 w-8 shrink-0 place-items-center rounded-[4px] border border-[color:var(--rule)] bg-white p-1 text-ink group-hover:border-petrol"
+                                aria-hidden
+                              >
+                                <IntegrationLogoMark
+                                  logo={tool.logo}
+                                />
+                              </span>
+                              <span className="min-w-0 break-words font-mono text-[0.66rem] font-medium uppercase tracking-[0.12em] text-current">
+                                {tool.name}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.08}>
+                <div className="border-t border-[color:var(--rule)] pt-8">
+                  <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+                    <div>
+                      <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
+                        Case-study slots
+                      </p>
+                      <h3 className="mt-3 font-serif text-[clamp(1.55rem,2.4vw,2.6rem)] font-light leading-[1.05]">
+                        Results need receipts.
+                      </h3>
+                    </div>
+                    <p className="max-w-[44ch] text-sm leading-[1.6] text-muted-foreground">
+                      These are placeholders for now. Replace each metric with
+                      a real before-and-after number before launch.
+                    </p>
+                  </div>
+                  <div className="mt-8 grid grid-cols-1 border-t border-[color:var(--rule)] lg:grid-cols-3">
+                    {caseStudySlots.map((study) => (
+                      <article
+                        key={study.result}
+                        className="border-b border-[color:var(--rule)] py-7 lg:border-r lg:px-6"
+                      >
+                        <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-signal">
+                          {study.metric}
+                        </p>
+                        <h4 className="mt-4 font-serif text-2xl font-light leading-[1.08]">
+                          {study.result}
+                        </h4>
+                        <p className="mt-4 text-sm leading-[1.6] text-muted-foreground">
+                          {study.title}
+                        </p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
         {/* ----- Process ------------------------------------------------ */}
         <section
           className="relative bg-background text-foreground"
@@ -185,9 +628,9 @@ export default function Home() {
             <Reveal>
               <h2
                 id="process-title"
-                className="font-serif font-light leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
+                className="font-serif font-normal leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
               >
-                How it
+                How it{" "}
                 <br />
                 goes.
               </h2>
@@ -226,7 +669,7 @@ export default function Home() {
               <div>
                 <h2
                   id="operator-title"
-                  className="font-serif font-light leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
+                  className="font-serif font-normal leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
                 >
                   Jordan Vale
                 </h2>
@@ -277,17 +720,17 @@ export default function Home() {
             <Reveal>
               <h2
                 id="contact-title"
-                className="max-w-[18ch] font-serif font-light leading-[0.98] text-[clamp(2.4rem,5.8vw,6rem)]"
+                className="max-w-[18ch] font-serif font-normal leading-[0.98] text-[clamp(2.4rem,5.8vw,6rem)]"
               >
                 If you&rsquo;ve already decided AI matters,{" "}
                 <em className="italic text-signal">we should talk.</em>
               </h2>
             </Reveal>
             <Reveal delay={0.05}>
-              <div className="relative max-w-2xl overflow-hidden rounded-2xl border border-border bg-secondary/30 p-8 backdrop-blur-sm sm:p-10">
+              <div className="relative isolate max-w-2xl overflow-hidden rounded-2xl border border-border bg-secondary/30 p-8 backdrop-blur-sm sm:p-10">
                 <BorderBeam size={260} duration={11} />
-                <BorderBeam size={260} duration={11} delay={5.5} colorFrom="var(--petrol)" colorTo="var(--signal)" />
 
+                <div className="relative z-10">
                 <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-signal">
                   Thirty minutes. No pitch.
                 </p>
@@ -319,6 +762,7 @@ export default function Home() {
                       {fallbackEmail}
                     </a>
                   </p>
+                </div>
                 </div>
               </div>
             </Reveal>

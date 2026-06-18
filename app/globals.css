@@ -12,9 +12,14 @@
    --------------------------------------------------------------------------- */
 
 @theme inline {
+  /* Two-family typography (editorial pairing):
+     - font-serif → Spectral (display / headlines)
+     - font-sans  → Hanken Grotesk (body / UI)
+     - font-mono  → rebound to Hanken (we don't ship a true mono on this
+       surface; the small all-caps kicker treatment carries the label role) */
   --font-sans: var(--font-sans-brand);
   --font-serif: var(--font-serif-brand);
-  --font-mono: var(--font-mono-brand);
+  --font-mono: var(--font-sans-brand);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -141,14 +146,17 @@
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
     margin: 0;
     line-height: 1.55;
   }
 
+  /* Spectral display sits well at a gentle negative track — -0.018em keeps
+     the serif's drawn kerning intact while pulling the line tight enough to
+     read as a "designed" headline rather than a paragraph of large type. */
   h1, h2, h3, .font-serif {
-    font-family: var(--font-serif);
-    letter-spacing: -0.035em;
+    font-family: var(--font-serif-brand);
+    font-feature-settings: "ss02", "kern";
+    letter-spacing: -0.018em;
     text-wrap: balance;
   }
 
@@ -218,8 +226,14 @@
   from { transform: translateY(0); }
   to   { transform: translateY(calc(-100% - var(--gap))); }
 }
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 @keyframes border-beam {
-  to { offset-distance: 100%; }
+  to { --beam-angle: 360deg; }
 }
 @keyframes beam-flow {
   from { stroke-dashoffset: 0; }

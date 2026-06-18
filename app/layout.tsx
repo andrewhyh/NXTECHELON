@@ -1,26 +1,35 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Hanken_Grotesk, Spectral } from "next/font/google";
 import "./globals.css";
 
-const serif = Source_Serif_4({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-serif-brand",
-  display: "swap",
-});
-
+/**
+ * Two-family typography (editorial pairing on a serif/sans contrast axis):
+ *
+ *   Display (h1 / h2 / h3, hero headline, section headers, kicker on cards)
+ *     → Spectral. Modern editorial serif by Production Type. Beautifully
+ *       drawn italic carries the hero's rotating-phrase signature moment.
+ *
+ *   Body / labels / UI
+ *     → Hanken Grotesk. Friendly humanist neo-grotesque, plain at body
+ *       size, recognizable as "professional" without leaning technical.
+ *
+ * Tailwind's `font-serif` → Spectral, `font-sans` → Hanken, `font-mono` is
+ * rebound in globals.css to Hanken (we don't ship a true mono on this
+ * surface; the small all-caps "kicker" treatment carries the label role).
+ */
 const sans = Hanken_Grotesk({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   variable: "--font-sans-brand",
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
+const serif = Spectral({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono-brand",
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-serif-brand",
   display: "swap",
 });
 
@@ -43,10 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${serif.variable} ${sans.variable} ${mono.variable}`}
-    >
+    <html lang="en" className={`${sans.variable} ${serif.variable}`}>
       <body className="min-h-screen antialiased">{children}</body>
     </html>
   );

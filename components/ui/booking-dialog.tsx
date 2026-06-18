@@ -74,7 +74,7 @@ export function BookingDialog() {
         </p>
         <h2
           id="booking-title"
-          className="mt-3 max-w-[20ch] font-serif text-3xl font-light leading-[1.05] text-foreground sm:text-4xl"
+          className="mt-3 max-w-[20ch] font-serif text-3xl font-normal leading-[1.05] text-foreground sm:text-4xl"
         >
           Thirty minutes. We figure out what to build &mdash; and whether
           it&rsquo;s worth your money.
