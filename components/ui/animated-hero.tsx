@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, PhoneCall } from "lucide-react";
+import { BeamButton } from "@/components/ui/beam-button";
 import { Button } from "@/components/ui/button";
 
 const loadIn = {
@@ -90,22 +91,6 @@ function Hero() {
           initial={prefersReducedMotion ? "visible" : "hidden"}
           animate="visible"
         >
-          {/* Announcement chip — kept small and quiet, editorial signal not
-              SaaS badge. Mono label, hairline rule, single arrow. */}
-          <motion.a
-            href="#perspective"
-            className="group inline-flex items-center gap-3 rounded-full border border-border bg-secondary/40 px-4 py-1.5 text-[0.72rem] font-mono uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:border-signal/60 hover:text-foreground"
-            variants={loadIn}
-            custom={0}
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-signal" aria-hidden />
-            Notes from the workshop
-            <ArrowUpRight
-              className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              strokeWidth={1.75}
-            />
-          </motion.a>
-
           {/* Headline — three-line editorial composition. The middle line
               rotates; the slot is reserved so the line never collapses. */}
           <motion.h1
@@ -126,6 +111,11 @@ function Hero() {
               {titles.map((title, index) => (
                 <motion.span
                   key={title}
+                  // data-rotating-phrase is matched by the noscript style
+                  // block in app/layout.tsx so phrase 0 stays visible and the
+                  // rest stay hidden under JS-disabled — preserves the
+                  // BRIEF.md §6 "static finals of every kinetic moment" rule.
+                  data-rotating-phrase={index}
                   className="absolute inset-x-0 italic text-signal"
                   style={{ fontWeight: 400 }}
                   initial={{ opacity: 0, y: 120 }}
@@ -178,14 +168,14 @@ function Hero() {
             variants={loadIn}
             custom={0.6}
           >
-            <Button
+            <BeamButton
               size="lg"
               className="group h-12 gap-3 px-7 text-sm tracking-wide"
               data-booking-trigger
             >
               <PhoneCall className="h-4 w-4" strokeWidth={1.8} />
               Book a call
-            </Button>
+            </BeamButton>
             <Button
               asChild
               size="lg"
@@ -211,7 +201,7 @@ function Hero() {
           >
             <span>Est. 2026</span>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/40" aria-hidden />
-            <span>Brooklyn + Remote</span>
+            <span>Atlanta + Remote</span>
             <span className="h-1 w-1 rounded-full bg-muted-foreground/40" aria-hidden />
             <span>Now taking new clients</span>
           </motion.div>

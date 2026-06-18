@@ -5,12 +5,13 @@ import { X } from "lucide-react";
 
 const BOOKING_URL =
   process.env.NEXT_PUBLIC_BOOKING_URL ??
-  "https://cal.com/nxtechelon-placeholder/30min";
+  "https://cal.com/nxtechelon/30min";
 
 /**
  * BookingDialog — native <dialog>, escape-able, scrim-dismissable, iframe-loaded.
  * Any element with `data-booking-trigger` anywhere on the page opens it.
- * Replace the URL via NEXT_PUBLIC_BOOKING_URL once the real Cal.com handle lands.
+ * The live handle is cal.com/nxtechelon/30min; the env var override exists so
+ * preview/staging deploys can point at a separate calendar without code edits.
  */
 export function BookingDialog() {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -80,9 +81,9 @@ export function BookingDialog() {
           it&rsquo;s worth your money.
         </h2>
         <p className="mt-3 max-w-[55ch] text-sm text-muted-foreground sm:text-base">
-          Placeholder Cal.com handle is wired below. Replace via{" "}
-          <code className="font-mono text-foreground/80">NEXT_PUBLIC_BOOKING_URL</code>{" "}
-          before launch.
+          Pick a time below. Bring the problem; we&rsquo;ll bring the
+          questions, the honest answer, and a fixed-price plan if
+          there&rsquo;s a real system to build.
         </p>
 
         <iframe

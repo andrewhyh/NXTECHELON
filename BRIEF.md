@@ -126,10 +126,23 @@ Page transitions between Ink and Paper sections are scroll-driven crossfades on 
 
 **Imagery / media inventory:**
 
-- **Signature element (hero, primary):** A bespoke generative mark on HTML Canvas — a particle field that resolves into the NXTECHELON wordmark over ~1.5s, then drifts with low-amplitude parametric motion. Operator-mathematics aesthetic: a vector field finding its attractor, not a logo animation. Renders deterministically (seeded RNG) so every visitor sees the same composition. ~12KB of code, no asset payload.
+- **Signature element (hero, primary):** The HTML-Canvas particle mark from the original brief was retired in the 2026-06-17 stack pivot. The signature moment is now the rotating-phrase headline; the canvas mark can be re-added later if the page needs more visual weight.
 - **Section dividers (optional):** A 1px Petrol Teal hairline rule between major sections, never thicker.
+- **Integration logos:** Small monochrome tool marks in the Proof section's integration coverage grid. Each renders at h-6 w-6, locked to the brand's `text-ink` / `text-petrol` palette. Asset-served (`/logos/integrations/*.svg`) or hand-drawn SVG fallback (`IntegrationMark` switch in `app/page.tsx`); `simple-icons` glyphs cover the remainder. These are tool marks, not client logos — they signal capability breadth, not social proof.
 - **Founder portrait:** Single B&W, editorial framing, only if real. No stock.
-- **No icons, no illustrations, no decorative SVG, no stock photography.** The page is type, motion, and one canvas signature.
+- **No stock photography, no illustration, no decorative SVG beyond the integration marks above.**
+
+**Component additions sanctioned 2026-06-18 (post-2026-06-17 stack pivot):** The original §8 read "type, motion, and one canvas signature." The live page now also uses these primitives. Each earned its place against the DESIGN.md don'ts; do not add more without a similar audit.
+
+- **`BentoSection` + `BentoGrid`** — tonal-layered "show, don't tell" capability moments between Services and Proof. No card shadows, no glass; depth is tonal. Replaces the would-be "feature card grid" anti-pattern by being explicitly typographic and varied in cell size.
+- **`BorderBeam`** — single decorative motion on the final booking CTA card. One animated sweep, deliberately scarce per the One Voice Rule. CSS-animation-driven; disabled by the `prefers-reduced-motion` block in `globals.css`.
+- **`TextScramble`** — wordmark scramble in the sticky top nav. Triggered on hover only (never auto-runs). Honors `useReducedMotion()` so reduced-motion users see plain text + the underline crossfade.
+- **`SlideTabs`** — persistent top-nav with a sliding indicator behind the active section. Replaces the original brief's plan to lean on `mix-blend-difference` alone; the wordmark still uses blend-mode for legibility across pivots.
+- **`Marquee`** — horizontal infinite scroll used inside the bento "searchable knowledge" panel. CSS-animation-driven; disabled under reduced motion.
+- **`AnimatedList`** — sequential message-stack reveal inside the bento "AI receptionist" panel. Honors `useReducedMotion()` and renders the last N items statically when reduced motion is set.
+- **`Reveal`** (already in §6) — single shared scroll-into-view choreography across every headline and content block. Honors `useReducedMotion()`. Carries a `data-reveal` attribute that the noscript style block in `app/layout.tsx` targets to force opacity:1 under JS-disabled.
+
+**JS-disabled fallback (BRIEF §6 commitment):** `app/layout.tsx` ships a `<noscript>` `<style>` block that forces `[data-reveal]` and `[data-motion-fade]` to `opacity: 1; transform: none`, and that hides every `[data-rotating-phrase]` except phrase 0. With JS off, the hero still reads as a complete three-line headline and every Reveal-wrapped section is fully visible.
 
 **Microcopy bans (from PRODUCT.md anti-references):** No "transform / accelerate / unlock / empower / revolutionize / leverage / supercharge / unleash." No "let's chat." No "founder-led" as a vague claim. No "trusted by the world's leading…". Every sentence is specific or it's cut.
 
@@ -137,12 +150,12 @@ Page transitions between Ink and Paper sections are scroll-driven crossfades on 
 
 DESIGN.md left this as a placeholder. The shape phase committed to:
 
-**Implemented 2026-06-17 (Google Fonts via `next/font/google`):**
-- **Display:** **Source Serif 4** (regular, light, italic) — editorial advisor voice. Hero headline, section headlines, all `<h1>`–`<h3>`.
-- **Body / UI sans:** **Hanken Grotesk** (regular, medium, semibold) — disciplined operator voice. All body copy, sub-headlines, navigation, button labels. *Swapped from the originally-planned Inter at the pivot, since Inter is on the impeccable brand-register reflex-reject list; Hanken Grotesk is a non-reflex neo-grotesque that pairs cleanly with Source Serif 4 on a serif/sans contrast axis.*
-- **Mono / labels:** **JetBrains Mono** — small technical detail, metadata, kicker chips, the mono meta strip in the hero footer.
+**Implemented 2026-06-17, revised 2026-06-18 (Google Fonts via `next/font/google`):**
+- **Display:** **Spectral** (light, regular, medium, semibold; normal + italic) — editorial advisor voice. Hero headline, section headlines, all `<h1>`–`<h3>`. Modern editorial serif by Production Type with a beautifully drawn italic that carries the hero rotating-phrase signature moment. *Originally committed as Source Serif 4 on 2026-06-17; swapped for Spectral on 2026-06-18 — the implementation pass landed on Spectral for italic character and slightly tighter display metrics. Both are valid non-reflex pairings; the docs were updated to reality.*
+- **Body / UI sans:** **Hanken Grotesk** (300, 400, 500, 600, 700; normal + italic) — disciplined operator voice. All body copy, sub-headlines, navigation, button labels. *Swapped from the originally-planned Inter at the pivot, since Inter is on the impeccable brand-register reflex-reject list; Hanken Grotesk is a non-reflex neo-grotesque that pairs cleanly with Spectral on a serif/sans contrast axis.*
+- **Mono / labels:** No true mono font shipped. The Tailwind `font-mono` utility is rebound to Hanken Grotesk in `globals.css`; the small all-caps tracked label treatment ("EST. 2026", credential roadmap kickers, mono meta strip) carries the label role on its own. *Originally planned as JetBrains Mono; not loaded today — the type system reads coherent on two families.*
 
-Pair on a contrast axis: serif display + neo-grotesque sans + mono. None of the three are on the brand-register reflex-reject list.
+Pair on a contrast axis: serif display + neo-grotesque sans. Neither is on the brand-register reflex-reject list. If a true mono is needed later, JetBrains Mono remains the committed swap; load it via `next/font/google` and unbind `font-mono` in `globals.css`.
 
 **Klim premium swap path (still open):** GT Sectra Display + Söhne + Söhne Mono was the original committed pairing. If the Klim license is procured, swap is `app/layout.tsx` `next/font` declarations + the `--font-*-brand` variables in `app/globals.css`. The rest of the system does not change.
 

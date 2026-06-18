@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   title: "NXTECHELON — AI systems, shipped.",
   description:
     "An AI build studio for operators with judgment and no time. We architect, ship, and hand over the systems that move your business — with runbooks, not handwaving.",
-  metadataBase: new URL("https://nxtechelon.com"),
+  metadataBase: new URL("https://nextechelon.site"),
   openGraph: {
     title: "NXTECHELON — AI systems, shipped.",
     description:
@@ -53,6 +53,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${sans.variable} ${serif.variable}`}>
+      <head>
+        {/* JS-disabled fallback. Framer-motion ships motion components with
+            initial styles inline (opacity: 0 etc.) at SSR; without hydration
+            those styles persist and content stays invisible. BRIEF.md §6
+            commits to "all copy server-rendered and readable" — these rules
+            preserve that contract for noscript users. */}
+        <noscript>
+          <style>{`
+            [data-reveal],
+            [data-motion-fade] {
+              opacity: 1 !important;
+              transform: none !important;
+            }
+            [data-rotating-phrase] {
+              display: none !important;
+            }
+            [data-rotating-phrase="0"] {
+              display: block !important;
+              opacity: 1 !important;
+              transform: none !important;
+            }
+          `}</style>
+        </noscript>
+      </head>
       <body className="min-h-screen antialiased">{children}</body>
     </html>
   );

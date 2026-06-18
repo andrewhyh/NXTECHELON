@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import { useReducedMotion } from "framer-motion";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*";
 
@@ -21,6 +22,7 @@ export function TextScramble({
   className = "",
   textClassName = "font-mono text-lg tracking-widest uppercase",
 }: TextScrambleProps) {
+  const prefersReducedMotion = useReducedMotion();
   const [displayText, setDisplayText] = useState(text);
   const [isHovering, setIsHovering] = useState(false);
   const [isScrambling, setIsScrambling] = useState(false);
@@ -28,6 +30,9 @@ export function TextScramble({
   const frameRef = useRef(0);
 
   const scramble = useCallback(() => {
+    // Reduced motion: the underline crossfade still carries the hover state;
+    // the per-character scramble is suppressed entirely.
+    if (prefersReducedMotion) return;
     setIsScrambling(true);
     frameRef.current = 0;
     const duration = text.length * 3;
@@ -57,7 +62,7 @@ export function TextScramble({
         setIsScrambling(false);
       }
     }, 30);
-  }, [text]);
+  }, [text, prefersReducedMotion]);
 
   const handleMouseEnter = () => {
     setIsHovering(true);

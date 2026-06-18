@@ -13,21 +13,21 @@ import {
 } from "simple-icons";
 
 import { Hero } from "@/components/ui/animated-hero";
+import { BeamButton } from "@/components/ui/beam-button";
 import { BentoSection } from "@/components/ui/bento-section";
 import { BookingDialog } from "@/components/ui/booking-dialog";
 import { BorderBeam } from "@/components/ui/border-beam";
-import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { SlideTabs } from "@/components/ui/slide-tabs";
 import { TextScramble } from "@/components/ui/text-scramble";
 
 /* ---------------------------------------------------------------------------
-   Content. Pulled forward from the Codex implementation (CSS-Modules
-   version, deleted in this rebuild). Placeholders match the brief:
-   real bio / shipped systems / Cal handle / email land via the user.
+   Content. Pre-portfolio posture: real founder, real capabilities, no
+   fabricated proof. Real Cal.com handle and one truthful line for Andrew's
+   background still land via the user — see CLAUDE.md TODOs.
    --------------------------------------------------------------------------- */
 
-const fallbackEmail = "hello@example.com";
+const fallbackEmail = "huynh.andrew2021@gmail.com";
 
 const navTabs = [
   { label: "Home", href: "#top" },
@@ -77,34 +77,11 @@ const steps = [
   },
 ] as const;
 
-const shippedSystems = [
-  "Built a placeholder tool that sorts new leads by urgency and fit, so the team only calls back the ones worth their time.",
-  "Built a placeholder assistant that searches every proposal, contract, and note at once — finding the right one takes seconds, not an hour.",
-  "Built a placeholder system that answers routine customer questions, flags the ones that need a real person, and learns from every reply.",
-  "Built a placeholder weekly briefing that pulls from every tool and lands one clear summary in the owner's inbox every Monday morning.",
-] as const;
-
-const credentialRoadmap = [
-  {
-    name: "Make Academy",
-    value: "Free",
-    detail: "Best first badge for scenario builders and small-business workflow automation.",
-  },
-  {
-    name: "HubSpot Academy",
-    value: "Free",
-    detail: "Useful for CRM, sales, marketing automation, and service-team handoffs.",
-  },
-  {
-    name: "Microsoft Applied Skills",
-    value: "Free labs",
-    detail: "Strong signal for Power Automate, Microsoft 365, and Copilot-heavy clients.",
-  },
-  {
-    name: "Airtable Academy",
-    value: "Free",
-    detail: "Good proof for lightweight internal tools, ops bases, and dashboard systems.",
-  },
+const buildableSystems = [
+  "A tool that sorts new leads by urgency and fit, so the team only calls back the ones worth their time.",
+  "An assistant that searches every proposal, contract, and note at once — finding the right one takes seconds, not an hour.",
+  "A system that answers routine customer questions, flags the ones that need a real person, and learns from every reply.",
+  "A weekly briefing that pulls from every tool and lands one clear summary in the owner's inbox every Monday morning.",
 ] as const;
 
 const integrationGroups = [
@@ -149,6 +126,39 @@ const integrationGroups = [
     ],
   },
 ] as const;
+
+const archivedFaqItems = [
+  {
+    q: "How much does a build cost?",
+    a: "Engagements are fixed-price, scoped to one bottleneck. The first call is free and ends with a written quote — or an honest 'this isn't worth building yet.' No retainers, no surprise hourly bills.",
+  },
+  {
+    q: "How long does a build take?",
+    a: "Most builds land in four to eight weeks from quote to handoff. We work in weekly checkpoints so you call the shots as scope sharpens — no open-ended timelines, no scope creep.",
+  },
+  {
+    q: "What actually counts as AI for my business?",
+    a: "The boring parts that drain your week — sorting leads, drafting proposals, answering routine customer questions, pulling reports from five tools at once. Not chatbots that wow on demo day and confuse your staff on Tuesday.",
+  },
+  {
+    q: "Who actually does the work?",
+    a: "Andrew Huynh, hands on keys. No offshore handoff, no junior team you've never met. If something breaks, you call the person who built it.",
+  },
+  {
+    q: "What happens after launch?",
+    a: "You own the code, the accounts, and the documentation. We hand off with plain-English instructions and a person on your team trained to run it. The Maintain pillar is an opt-in agreement — not a permanent retainer.",
+  },
+  {
+    q: "Where are you based?",
+    a: "Atlanta, Georgia. We work in person with Atlanta-area businesses and remotely with everyone else. Same posture either way — weekly progress, fixed scope, fixed price.",
+  },
+  {
+    q: "What if AI isn't the right fix for my problem?",
+    a: "We'll tell you on the first call. Half the bottlenecks we see are solved by a workflow change or a twenty-dollar tool — not a custom build. If that's you, we'll point you in the right direction and call it a good thirty minutes.",
+  },
+] as const;
+
+void archivedFaqItems;
 
 type IntegrationLogo = (typeof integrationGroups)[number]["tools"][number]["logo"];
 
@@ -378,23 +388,38 @@ function IntegrationLogoMark({
   return <IntegrationMark logo={logo} />;
 }
 
-const caseStudySlots = [
+const faqItems = [
   {
-    result: "Invoice intake",
-    metric: "Replace with real metric",
-    title: "PDFs, email attachments, and approvals routed into one clean workflow.",
+    q: "How much does a build cost?",
+    a: "Engagements are fixed-price, scoped to one bottleneck. The first call is free and ends with a written quote — or an honest 'this isn't worth building yet.' No retainers, no surprise hourly bills.",
   },
   {
-    result: "Lead follow-up",
-    metric: "Replace with real metric",
-    title: "New inquiries scored, summarized, and assigned before the team opens the inbox.",
+    q: "How long does a build take?",
+    a: "Most builds land in four to eight weeks from quote to handoff. We work in weekly checkpoints so you call the shots as scope sharpens — no open-ended timelines, no scope creep.",
   },
   {
-    result: "Weekly reporting",
-    metric: "Replace with real metric",
-    title: "Owner-ready operating summaries pulled from the tools the team already uses.",
+    q: "What actually counts as AI for my business?",
+    a: "The boring parts that drain your week — sorting leads, drafting proposals, answering routine customer questions, pulling reports from five tools at once. Not chatbots that wow on demo day and confuse your staff on Tuesday.",
+  },
+  {
+    q: "Who actually does the work?",
+    a: "Andrew Huynh, hands on keys. No offshore handoff, no junior team you've never met. If something breaks, you call the person who built it.",
+  },
+  {
+    q: "What happens after launch?",
+    a: "You own the code, the accounts, and the documentation. We hand off with plain-English instructions and a person on your team trained to run it. The Maintain pillar is an opt-in agreement — not a permanent retainer.",
+  },
+  {
+    q: "Where are you based?",
+    a: "Atlanta, Georgia. We work in person with Atlanta-area businesses and remotely with everyone else. Same posture either way — weekly progress, fixed scope, fixed price.",
+  },
+  {
+    q: "What if AI isn't the right fix for my problem?",
+    a: "We'll tell you on the first call. Half the bottlenecks we see are solved by a workflow change or a twenty-dollar tool — not a custom build. If that's you, we'll point you in the right direction and call it a good thirty minutes.",
   },
 ] as const;
+
+void faqItems;
 
 export default function Home() {
   return (
@@ -494,49 +519,16 @@ export default function Home() {
                   can point to.
                 </h2>
                 <p className="mt-6 max-w-[48ch] text-base leading-[1.6] text-foreground sm:text-lg">
-                  Atomic Actions uses badges, integration breadth, and case
-                  studies well. This version keeps the same trust signals,
-                  but makes the status honest until the credentials and client
-                  results are real.
+                  No client logos yet, no fabricated case studies. What we can
+                  point to today: the integration coverage to plug into the
+                  stack you already use, and a clear before-and-after promise
+                  for every engagement that ships.
                 </p>
               </div>
             </Reveal>
 
             <div className="space-y-14">
               <Reveal>
-                <div className="grid grid-cols-1 gap-8 border-t border-[color:var(--rule)] pt-8 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)]">
-                  <div>
-                    <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
-                      Credential roadmap
-                    </p>
-                    <h3 className="mt-3 max-w-[16ch] font-serif text-[clamp(1.55rem,2.4vw,2.6rem)] font-light leading-[1.05]">
-                      Low-cost badges that buyers recognize.
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-1 border-t border-[color:var(--rule)] min-[560px]:grid-cols-2 min-[560px]:border-l min-[560px]:border-t-0">
-                    {credentialRoadmap.map((credential) => (
-                      <article
-                        key={credential.name}
-                        className="border-b border-[color:var(--rule)] px-0 py-6 min-[560px]:border-r min-[560px]:px-6"
-                      >
-                        <div className="flex items-baseline justify-between gap-4">
-                          <h4 className="font-mono text-[0.78rem] font-medium uppercase tracking-[0.18em] text-foreground">
-                            {credential.name}
-                          </h4>
-                          <span className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-signal">
-                            {credential.value}
-                          </span>
-                        </div>
-                        <p className="mt-3 text-sm leading-[1.6] text-muted-foreground">
-                          {credential.detail}
-                        </p>
-                      </article>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={0.04}>
                 <div className="grid grid-cols-1 gap-8 border-t border-[color:var(--rule)] pt-8 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)]">
                   <div>
                     <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
@@ -578,40 +570,20 @@ export default function Home() {
                 </div>
               </Reveal>
 
-              <Reveal delay={0.08}>
+              <Reveal delay={0.04}>
                 <div className="border-t border-[color:var(--rule)] pt-8">
-                  <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-                    <div>
-                      <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
-                        Case-study slots
-                      </p>
-                      <h3 className="mt-3 font-serif text-[clamp(1.55rem,2.4vw,2.6rem)] font-light leading-[1.05]">
-                        Results need receipts.
-                      </h3>
-                    </div>
-                    <p className="max-w-[44ch] text-sm leading-[1.6] text-muted-foreground">
-                      These are placeholders for now. Replace each metric with
-                      a real before-and-after number before launch.
-                    </p>
-                  </div>
-                  <div className="mt-8 grid grid-cols-1 border-t border-[color:var(--rule)] lg:grid-cols-3">
-                    {caseStudySlots.map((study) => (
-                      <article
-                        key={study.result}
-                        className="border-b border-[color:var(--rule)] py-7 lg:border-r lg:px-6"
-                      >
-                        <p className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-signal">
-                          {study.metric}
-                        </p>
-                        <h4 className="mt-4 font-serif text-2xl font-light leading-[1.08]">
-                          {study.result}
-                        </h4>
-                        <p className="mt-4 text-sm leading-[1.6] text-muted-foreground">
-                          {study.title}
-                        </p>
-                      </article>
-                    ))}
-                  </div>
+                  <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
+                    Results — coming
+                  </p>
+                  <h3 className="mt-3 max-w-[24ch] font-serif text-[clamp(1.55rem,2.4vw,2.6rem)] font-light leading-[1.05]">
+                    Real before-and-after numbers will land here as the first
+                    engagements ship.
+                  </h3>
+                  <p className="mt-4 max-w-[60ch] text-sm leading-[1.6] text-muted-foreground sm:text-base">
+                    No fabricated metrics, no stock testimonials. Until those
+                    receipts exist, the site itself is the proof — the way it
+                    reads is the way the work reads.
+                  </p>
                 </div>
               </Reveal>
             </div>
@@ -671,18 +643,24 @@ export default function Home() {
                   id="operator-title"
                   className="font-serif font-normal leading-none text-[clamp(2.1rem,4vw,4.2rem)]"
                 >
-                  Jordan Vale
+                  Andrew Huynh
                 </h2>
                 <p className="mt-6 max-w-[60ch] text-base leading-[1.65] text-foreground sm:text-lg">
-                  <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
-                    Placeholder bio —{" "}
-                  </span>
-                  Jordan has spent the last decade building practical tools
-                  for businesses that needed them &mdash; not flashy demos,
-                  not pitch decks, but software that real teams use every
-                  day. The work sits between understanding what the business
-                  actually needs and getting the thing built. Replace this
-                  paragraph with the real founder background before launch.
+                  Andrew builds AI systems and tools for small and mid-sized
+                  businesses in Atlanta and remote. His day work is product
+                  security at a Capital Markets firm &mdash; closing critical
+                  vulnerabilities in software that moves millions in daily
+                  transactions, and automating the busywork that piles up
+                  around it. The rest of his time goes into practical AI
+                  tooling: a multi-LLM command layer that runs his own
+                  knowledge and task workflow, a TypeScript summarizer that
+                  cuts long-form review time, and a self-hosted security lab
+                  with a hardened Docker stack and a Python vulnerability
+                  scanner pulling live CVE data from NVD. The work sits
+                  between understanding what the business actually needs and
+                  getting the thing built &mdash; not flashy demos, not pitch
+                  decks, but software that real teams use every day. Currently
+                  booking first engagements.
                 </p>
               </div>
             </Reveal>
@@ -690,10 +668,10 @@ export default function Home() {
             <Reveal delay={0.08}>
               <div className="border-t border-[color:var(--rule)] pt-6">
                 <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-petrol">
-                  Placeholder examples
+                  Things we can build for you
                 </p>
                 <ul className="mt-6 space-y-5 text-base leading-[1.6] text-foreground sm:text-lg">
-                  {shippedSystems.map((system) => (
+                  {buildableSystems.map((system) => (
                     <li
                       key={system}
                       className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-2"
@@ -745,14 +723,14 @@ export default function Home() {
                 </p>
 
                 <div className="mt-7 flex flex-col items-start gap-5">
-                  <Button
+                  <BeamButton
                     size="lg"
                     className="group h-12 gap-3 px-7 text-sm tracking-wide"
                     data-booking-trigger
                   >
                     <PhoneCall className="h-4 w-4" strokeWidth={1.8} />
                     Book a 30-minute call
-                  </Button>
+                  </BeamButton>
                   <p className="font-mono text-[0.78rem] uppercase tracking-[0.18em] text-muted-foreground">
                     Or write —{" "}
                     <a
