@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk, Spectral } from "next/font/google";
+import { Bricolage_Grotesque, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 
 /**
- * Two-family typography (editorial pairing on a serif/sans contrast axis):
+ * Two-family pairing, chosen for "warm authority" — the demeanour of a good
+ * local professional who is genuinely glad you called and also obviously knows
+ * the work. Not the aloof editorial register the site shipped with.
  *
- *   Display (h1 / h2 / h3, hero headline, section headers, kicker on cards)
- *     → Spectral. Modern editorial serif by Production Type. Beautifully
- *       drawn italic carries the hero's rotating-phrase signature moment.
+ *   Display → Bricolage Grotesque. A humanist grotesque with deliberate
+ *     irregularity in its terminals and a condensed, sign-painted build. It
+ *     reads like good shopfront lettering: warm and human at a glance, sturdy
+ *     and unfussy at weight. Carries authority without formality.
  *
- *   Body / labels / UI
- *     → Hanken Grotesk. Friendly humanist neo-grotesque, plain at body
- *       size, recognizable as "professional" without leaning technical.
+ *   Body → Hanken Grotesk. Smooth, even, and quiet enough to recede behind the
+ *     display face. The pairing sits on a real contrast axis (idiosyncratic
+ *     display vs. neutral text), not two lookalike grotesques.
  *
- * Tailwind's `font-serif` → Spectral, `font-sans` → Hanken, `font-mono` is
- * rebound in globals.css to Hanken (we don't ship a true mono on this
- * surface; the small all-caps "kicker" treatment carries the label role).
+ * No mono ships on this surface. The previous build rebound `font-mono` to
+ * Hanken and used it for tracked-uppercase kickers above every section — the
+ * single loudest "AI made this" tell on the page. Both are gone.
  */
 const sans = Hanken_Grotesk({
   subsets: ["latin"],
@@ -25,23 +28,22 @@ const sans = Hanken_Grotesk({
   display: "swap",
 });
 
-const serif = Spectral({
+const display = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-serif-brand",
+  axes: ["opsz", "wdth"],
+  variable: "--font-display-brand",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "NXTECHELON — AI systems, shipped.",
+  title: "NXTECHELON — AI that actually gets built, for Atlanta businesses",
   description:
-    "An AI build studio for operators with judgment and no time. We architect, ship, and hand over the systems that move your business — with runbooks, not handwaving.",
+    "Most small businesses are falling behind on AI while bigger companies pull ahead. We build the practical tools — lead follow-up, booking, quoting, answers — that give you the hours back. Atlanta and remote.",
   metadataBase: new URL("https://nextechelon.site"),
   openGraph: {
-    title: "NXTECHELON — AI systems, shipped.",
+    title: "NXTECHELON — AI that actually gets built",
     description:
-      "An AI build studio for operators with judgment and no time.",
+      "Practical AI systems for small and mid-sized businesses. Atlanta and remote.",
     type: "website",
   },
 };
@@ -52,31 +54,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable}`}>
-      <head>
-        {/* JS-disabled fallback. Framer-motion ships motion components with
-            initial styles inline (opacity: 0 etc.) at SSR; without hydration
-            those styles persist and content stays invisible. BRIEF.md §6
-            commits to "all copy server-rendered and readable" — these rules
-            preserve that contract for noscript users. */}
-        <noscript>
-          <style>{`
-            [data-reveal],
-            [data-motion-fade] {
-              opacity: 1 !important;
-              transform: none !important;
-            }
-            [data-rotating-phrase] {
-              display: none !important;
-            }
-            [data-rotating-phrase="0"] {
-              display: block !important;
-              opacity: 1 !important;
-              transform: none !important;
-            }
-          `}</style>
-        </noscript>
-      </head>
+    /* No <noscript> shim any more. The page previously needed one because
+       framer-motion serialised `opacity: 0` at SSR and only cleared it after
+       hydration. Nothing gates content on JS now: reveals are CSS view()
+       timelines that default to visible, and every booking CTA is a real <a>
+       to Cal.com that the dialog merely intercepts. The page is readable and
+       actionable with JS off, so there's nothing left to shim. */
+    <html lang="en" className={`${sans.variable} ${display.variable}`}>
       <body className="min-h-screen antialiased">{children}</body>
     </html>
   );

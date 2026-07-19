@@ -70,20 +70,16 @@ export function BookingDialog() {
           <X className="h-4 w-4" strokeWidth={1.75} />
         </button>
 
-        <p className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-signal">
-          Book a call
-        </p>
         <h2
           id="booking-title"
-          className="mt-3 max-w-[20ch] font-serif text-3xl font-normal leading-[1.05] text-foreground sm:text-4xl"
+          className="max-w-[22ch] pr-12 font-display text-2xl font-extrabold leading-[1.1] text-foreground sm:text-3xl"
         >
-          Thirty minutes. We figure out what to build &mdash; and whether
-          it&rsquo;s worth your money.
+          Grab a time. Thirty minutes, no pitch.
         </h2>
         <p className="mt-3 max-w-[55ch] text-sm text-muted-foreground sm:text-base">
-          Pick a time below. Bring the problem; we&rsquo;ll bring the
-          questions, the honest answer, and a fixed-price plan if
-          there&rsquo;s a real system to build.
+          Bring the thing that&rsquo;s been eating your week. You&rsquo;ll leave
+          with a straight answer &mdash; and a fixed-price plan if there&rsquo;s
+          something real to build.
         </p>
 
         <iframe

@@ -1,52 +1,48 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import type { CSSProperties, ElementType, ReactNode } from "react";
 
 /**
- * Reveal — a single, consistent scroll-into-view choreography for the page.
+ * Reveal — one scroll-into-view choreography for the whole page.
  *
- * One reveal motion is fine; eight different reveals per page is the AI
- * monoculture tell. This composes ALL scroll reveals on the landing page so
- * the rhythm stays coherent. The choreography is exponential ease-out, brief
- * (520ms), with a small Y translate (24px) — decisive, not theatrical.
+ * This is deliberately NOT a framer-motion component and NOT a client
+ * component. The previous version used `whileInView`, which serialises
+ * `opacity: 0` inline during SSR and only clears it once JS has hydrated AND
+ * an IntersectionObserver has fired. Anything that renders the page without
+ * completing that dance — headless renderers, link-preview and social-card
+ * bots, crawlers, a slow or failed hydration — got a blank section. For a
+ * marketing page whose entire job is the first impression, that's a real cost.
  *
- * Under `prefers-reduced-motion: reduce`, the element renders in its final
- * state on first paint. Content is never gated on the animation completing,
- * so headless / preview renderers see a fully-populated page.
+ * Instead: the element is visible by default and the reveal is layered on top
+ * via a CSS view() timeline (see `[data-reveal]` in globals.css). No JS on the
+ * critical path, and browsers without `animation-timeline` support simply show
+ * the finished state. The animation can only ever take something visible and
+ * animate it — it can never be the reason content is missing.
+ *
+ * `as` matters: this component must be able to BE the semantic element rather
+ * than wrap it. Wrapping an <li> in a <div> puts an invalid child inside <ol>,
+ * strips the list semantics screen readers rely on, and makes every item both
+ * :first-child and :last-child of its own wrapper — which silently kills
+ * first:/last: styling.
+ *
+ * `index` staggers siblings by offsetting the animation range.
  */
 export function Reveal({
   children,
-  delay = 0,
+  index = 0,
   className,
+  as: Tag = "div",
 }: {
   children: ReactNode;
-  delay?: number;
+  index?: number;
   className?: string;
+  as?: ElementType;
 }) {
-  const prefersReducedMotion = useReducedMotion();
-
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
   return (
-    <motion.div
-      // data-reveal is the hook the noscript style block in app/layout.tsx
-      // targets to force opacity:1 / transform:none under JS-disabled, so
-      // headless/preview renderers still see populated copy.
+    <Tag
       data-reveal
       className={className}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-      transition={{
-        duration: 0.52,
-        delay,
-        ease: [0.16, 1, 0.3, 1], // ease-out-quint
-      }}
+      style={{ "--reveal-i": index } as CSSProperties}
     >
       {children}
-    </motion.div>
+    </Tag>
   );
 }

@@ -2,24 +2,27 @@
 
 /* ---------------------------------------------------------------------------
    NXTECHELON brand tokens
-   - OKLCH throughout, anchored on Petrol Teal (DESIGN.md §2).
-   - Dark-by-default surface (Ink). The landing hero, process, and contact
-     sections live on Ink; thesis / services / operator opt into Paper via
-     a `.paper` class, which flips the shadcn semantic tokens locally.
-   - shadcn semantic tokens (--background / --foreground / --primary / etc.)
-     map to NXTECHELON's named palette. Component code stays portable;
-     the brand identity lives in these variables.
+
+   Posture note (2026-07-16): the previous build was dark-by-default with the
+   teal anchor used only on a handful of tiny kicker labels — the palette was
+   ~98% neutral and the page read aloof. The brand is now LIGHT-by-default:
+   open and welcoming is the ground state, and the dark/teal fields are the
+   deliberate, occasional moments of weight. Petrol carries real surface area
+   instead of decorating labels.
+
+   Sections opt into a surface:
+     (default)      Paper  — off-white, friendly, the dominant ground
+     .ink           Ink    — near-black, used for the closing CTA
+     .deep          Petrol — drenched teal field, used for the evidence section
+
+   NOT cream. --paper is tinted toward the brand teal (hue 200), never toward
+   warm-by-default. The cream/sand/parchment band is the AI reflex.
    --------------------------------------------------------------------------- */
 
 @theme inline {
-  /* Two-family typography (editorial pairing):
-     - font-serif → Spectral (display / headlines)
-     - font-sans  → Hanken Grotesk (body / UI)
-     - font-mono  → rebound to Hanken (we don't ship a true mono on this
-       surface; the small all-caps kicker treatment carries the label role) */
+  /* Two families on a real contrast axis. No mono ships on this surface. */
   --font-sans: var(--font-sans-brand);
-  --font-serif: var(--font-serif-brand);
-  --font-mono: var(--font-sans-brand);
+  --font-display: var(--font-display-brand);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -44,84 +47,119 @@
   --color-ink: var(--ink);
   --color-paper: var(--paper);
   --color-petrol: var(--petrol);
+  --color-petrol-deep: var(--petrol-deep);
   --color-signal: var(--signal);
-  --color-vellum: var(--vellum);
+  --color-signal-ink: var(--signal-ink);
   --color-rule: var(--rule);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 10px);
 }
 
 :root {
-  /* ---- NXTECHELON named palette (canonical OKLCH) ---------------------- */
-  --ink:    oklch(0.18 0.012 200);
-  --paper:  oklch(0.97 0.003 200);
-  --petrol: oklch(0.42 0.075 200);
-  --signal: oklch(0.74 0.165 55);
-  --vellum: oklch(0.62 0.008 200);
-  --rule:   oklch(0.30 0.014 200);
+  /* ---- Named palette. Every pair below is verified against WCAG AA; see
+       the contrast table in CLAUDE.md. ------------------------------------- */
+  --ink:         oklch(0.19 0.012 210);
+  --paper:       oklch(0.975 0.004 200);
+  --petrol:      oklch(0.44 0.078 205);
+  --petrol-deep: oklch(0.30 0.055 205);
 
-  /* ---- shadcn semantic tokens — default = DARK (Ink) ------------------- */
-  --background: var(--ink);
-  --foreground: var(--paper);
+  /* Two warms, and they are NOT interchangeable:
+       --signal      bright oxide orange. FILLS ONLY on light surfaces
+                     (2.64:1 on paper — fails even the large-text floor).
+                     Safe as TEXT on ink (6.50) and on petrol-deep (4.69).
+       --signal-ink  darker oxide. The text-safe warm on paper (5.50). */
+  --signal:      oklch(0.70 0.175 50);
+  --signal-ink:  oklch(0.52 0.17 45);
 
-  --card: var(--ink);
-  --card-foreground: var(--paper);
+  --rule:        oklch(0.90 0.006 205);
 
-  --popover: var(--ink);
-  --popover-foreground: var(--paper);
-
-  --primary: var(--signal);
-  --primary-foreground: var(--ink);
-
-  --secondary: oklch(0.26 0.012 200);
-  --secondary-foreground: var(--paper);
-
-  --muted: oklch(0.24 0.010 200);
-  --muted-foreground: oklch(0.74 0.010 200);
-
-  --accent: var(--petrol);
-  --accent-foreground: var(--paper);
-
-  --destructive: oklch(0.55 0.18 25);
-  --destructive-foreground: var(--paper);
-
-  --border: oklch(0.28 0.014 200);
-  --input: oklch(0.28 0.014 200);
-  --ring: var(--signal);
-
-  --radius: 0.25rem;
-}
-
-/* Paper sections — opt-in via <section className="paper">. Keeps the body
-   dark on cold load (matches the hero) and avoids a global theme flip. */
-.paper {
+  /* ---- shadcn semantic tokens — default = LIGHT (Paper) ----------------- */
   --background: var(--paper);
   --foreground: var(--ink);
 
-  --card: var(--paper);
+  --card: oklch(0.995 0.003 200);
   --card-foreground: var(--ink);
 
   --popover: var(--paper);
   --popover-foreground: var(--ink);
 
-  --primary: var(--ink);
+  --primary: var(--petrol);
   --primary-foreground: var(--paper);
 
-  --secondary: oklch(0.93 0.004 200);
+  --secondary: oklch(0.945 0.008 200);
   --secondary-foreground: var(--ink);
 
-  --muted: oklch(0.94 0.004 200);
-  --muted-foreground: oklch(0.42 0.010 200);
+  --muted: oklch(0.945 0.006 200);
+  --muted-foreground: oklch(0.44 0.012 210); /* 7.20 on paper */
 
-  --accent: var(--petrol);
+  --accent: var(--signal-ink);
   --accent-foreground: var(--paper);
 
-  --border: oklch(0.88 0.004 200);
-  --input: oklch(0.88 0.004 200);
-  --ring: var(--petrol);
+  --destructive: oklch(0.52 0.19 25);
+  --destructive-foreground: var(--paper);
+
+  --border: var(--rule);
+  --input: var(--rule);
+  --ring: var(--signal-ink);
+
+  --radius: 0.375rem;
+}
+
+/* Ink field — the closing CTA. Weight, not gloom. */
+.ink {
+  --background: var(--ink);
+  --foreground: var(--paper);
+
+  --card: oklch(0.24 0.014 210);
+  --card-foreground: var(--paper);
+
+  --primary: var(--signal);
+  --primary-foreground: var(--ink);
+
+  --secondary: oklch(0.26 0.014 210);
+  --secondary-foreground: var(--paper);
+
+  --muted: oklch(0.26 0.012 210);
+  --muted-foreground: oklch(0.76 0.012 210); /* 8.62 on ink */
+
+  --accent: var(--signal);
+  --accent-foreground: var(--ink);
+
+  --border: oklch(0.30 0.016 210);
+  --input: oklch(0.30 0.016 210);
+  --ring: var(--signal);
+
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Drenched petrol field — the evidence section. The brand colour finally
+   doing real work instead of tinting a label. */
+.deep {
+  --background: var(--petrol-deep);
+  --foreground: var(--paper);
+
+  --card: oklch(0.34 0.058 205);
+  --card-foreground: var(--paper);
+
+  --primary: var(--signal);
+  --primary-foreground: var(--ink);
+
+  --secondary: oklch(0.35 0.058 205);
+  --secondary-foreground: var(--paper);
+
+  --muted: oklch(0.35 0.05 205);
+  --muted-foreground: oklch(0.86 0.03 60); /* warm sand-ink, 8.64 on deep */
+
+  --accent: var(--signal);
+  --accent-foreground: var(--ink);
+
+  --border: oklch(0.40 0.05 205);
+  --input: oklch(0.40 0.05 205);
+  --ring: var(--signal);
 
   background-color: var(--background);
   color: var(--foreground);
@@ -140,6 +178,7 @@
     text-rendering: optimizeLegibility;
     background-color: var(--background);
     color: var(--foreground);
+    scroll-behavior: smooth;
   }
 
   body {
@@ -150,19 +189,21 @@
     line-height: 1.55;
   }
 
-  /* Spectral display sits well at a gentle negative track — -0.018em keeps
-     the serif's drawn kerning intact while pulling the line tight enough to
-     read as a "designed" headline rather than a paragraph of large type. */
-  h1, h2, h3, .font-serif {
-    font-family: var(--font-serif-brand);
-    font-feature-settings: "ss02", "kern";
-    letter-spacing: -0.018em;
+  /* Bricolage is drawn tight; -0.02em is enough to set it without touching.
+     Floor is -0.04em and we stay well clear. */
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display-brand);
+    letter-spacing: -0.021em;
     text-wrap: balance;
   }
 
   p { text-wrap: pretty; }
 
-  .font-mono { font-family: var(--font-mono); }
+  /* Tabular figures wherever real numbers are shown, so stats align. */
+  .nx-figures {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
 
   ::selection {
     background: var(--signal);
@@ -172,80 +213,111 @@
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 3px;
   }
-}
-
-@keyframes nx-load-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes nx-load-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.nx-load-fade-in {
-  animation: nx-load-fade-in 1s var(--load-delay, 0ms) ease forwards;
-  opacity: 0;
-}
-
-.nx-load-fade-up {
-  animation: nx-load-fade-up 1s var(--load-delay, 0ms) ease forwards;
-  opacity: 0;
 }
 
 /* ---------------------------------------------------------------------------
-   Magic-UI-style primitives, brand-tinted.
-   - Marquee: editorial horizontal/vertical infinite scroll for the bento
-     "searchable knowledge" panel.
-   - Border-beam: a single colored sweep that traces a parent's border edge.
-     Used around the final booking CTA card; the only decorative motion on
-     the page, deliberately scarce.
-   - Beam-flow: stroke-dashoffset animation for SVG integration lines.
+   Motion. Compose on transform/opacity only.
    --------------------------------------------------------------------------- */
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(calc(-100% - var(--gap))); }
-}
-@keyframes marquee-vertical {
-  from { transform: translateY(0); }
-  to   { transform: translateY(calc(-100% - var(--gap))); }
-}
-@property --beam-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
+@keyframes nx-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes border-beam {
-  to { --beam-angle: 360deg; }
-}
-@keyframes beam-flow {
-  from { stroke-dashoffset: 0; }
-  to   { stroke-dashoffset: -210; }
+/* Hero entrance. Runs on load, staggered by --load-delay. Because this is a
+   CSS animation on an already-rendered element (not a visibility gate), the
+   no-JS and headless cases still get readable content. */
+.nx-rise {
+  animation: nx-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--load-delay, 0ms) both;
 }
 
-.animate-marquee          { animation: marquee var(--duration) linear infinite; }
-.animate-marquee-vertical { animation: marquee-vertical var(--duration) linear infinite; }
-.animate-border-beam      { animation: border-beam calc(var(--duration) * 1s) infinite linear; }
-.animate-beam-flow        { animation: beam-flow 3s linear infinite; }
+/* The one piece of ambient motion on the page: a slow warm drift behind the
+   hero greeting. Deliberately scarce. */
+@keyframes nx-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(2%, -3%, 0) scale(1.06); }
+}
+.nx-drift { animation: nx-drift 18s ease-in-out infinite; }
 
-/* Reduced motion: every animation needs an alternative. */
+/* Load bloom — the wash swells up behind the greeting as the page arrives,
+   then hands off to the ambient drift. This animates the CONTAINER's opacity
+   and scale while `.nx-drift` animates the blobs inside it; putting both on
+   one element would have them fight over `transform`. */
+@keyframes nx-bloom-in {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.nx-bloom-in {
+  animation: nx-bloom-in 1.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* Word-by-word headline reveal. Words focus in — a small rise plus a blur
+   dissolve. Blur is a paint filter, not a layout property, and it's what gives
+   the arrival its depth rather than reading as a plain fade.
+   `backwards` fill: the resting state is the natural, visible one. */
+@keyframes nx-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.36em);
+    filter: blur(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.nx-word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+  animation: nx-word-in 0.78s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(var(--w-start, 0ms) + var(--w-i, 0) * var(--w-step, 42ms));
+}
+
+/* The luminous arc swells in as the evidence section enters view. Scroll-driven
+   like every other reveal on the page, so it stays on one motion system. */
+@keyframes nx-arc-in {
+  from { opacity: 0; transform: translateY(26px) scale(0.965); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.nx-arc { opacity: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .nx-arc {
+      animation: nx-arc-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 62%;
+    }
+  }
+}
+
+/* Scroll reveal — CSS view() timeline, no JS.
+   The default state is VISIBLE. The animation is a pure enhancement layered
+   on top, so a browser without `animation-timeline` (Firefox today), a
+   crawler, or a link-preview bot all render the finished page rather than an
+   empty one. Content is never gated on the animation firing.
+   --reveal-i staggers siblings by walking the range forward per index. */
+@keyframes nx-reveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+[data-reveal] { opacity: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation: nx-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry calc(2% + (var(--reveal-i, 0) * 5%)) entry
+        calc(50% + (var(--reveal-i, 0) * 5%));
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -254,16 +326,14 @@
     scroll-behavior: auto !important;
   }
 
-  .nx-load-fade-in,
-  .nx-load-fade-up {
+  .nx-rise,
+  .nx-drift,
+  .nx-bloom-in,
+  .nx-word,
+  .nx-arc {
+    animation: none !important;
     opacity: 1 !important;
     transform: none !important;
-  }
-
-  .animate-marquee,
-  .animate-marquee-vertical,
-  .animate-border-beam,
-  .animate-beam-flow {
-    animation: none !important;
+    filter: none !important;
   }
 }
